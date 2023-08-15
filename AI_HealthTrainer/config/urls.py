@@ -20,6 +20,8 @@ from AI_HealthTrainer import views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("show",views.show),
     path('', views.index, name='index'),
     path('video_feed/', views.webcam, name='webcam'),
+    # path("insert", views.insert, name='insert'),
 ]

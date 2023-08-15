@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import StreamingHttpResponse
+from AI_HealthTrainer.models import goal
 
 import cv2
 import numpy as np
@@ -105,3 +106,12 @@ def webcam(request):
 
 def index(request):
     return render(request, 'index.html')
+def show(request):
+    print("Execute")
+    students = goal.objects.raw("SELECT goal.id, goal.start, goal.end, goal.goal,user.name FROM goal,user where user.iduser=goal.user_iduser")
+    print(students)
+    return render(request,"show.html",{'student':students})
+def insertgoal(request):
+    Goal = goal(name=request.POST['name'],start=request.POST['start'],end=request.POST['end'],goal=request.POST['goal'],user_iduser=request.POST['iduser'])
+    Goal.save()
+    return
