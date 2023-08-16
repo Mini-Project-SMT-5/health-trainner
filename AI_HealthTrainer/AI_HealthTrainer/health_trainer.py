@@ -1,19 +1,17 @@
 from django.shortcuts import render
-from django.http import StreamingHttpResponse
+from django.http import StreamingHttpResponse, JsonResponse
 
-import cv2
-import time
-import threading
-import numpy as np
-import mediapipe as mp
+import time, json, cv2, threading, io, numpy as np, mediapipe as mp
+from gtts import gTTS
 from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
-
+from channels.layers import get_channel_layer
 
 mp_drawing = mp.solutions.drawing_utils # pose를 시각화해줌 (drawing utilities를 제공)
 mp_pose = mp.solutions.pose # mediapipe에서 여러가지 모델들 중 pose model을 가져옴
 
 lock = threading.Lock()
+channel_layer = get_channel_layer()
 
 def rest():
     global sets_counter, reps_counter, stage, is_rest
@@ -25,7 +23,7 @@ def rest():
     stage = None
     is_rest = False
     lock.release()
-    
+
 
 # angle calculate function
 def calculate_angle(a,b,c):
@@ -41,10 +39,31 @@ def calculate_angle(a,b,c):
         
     return angle 
 
+
+def pluscounter():
+    global reps_counter
+    
+    lock.acquire()
+    reps_counter += 1  
+    lock.release()     
+
+def generate_audio_feedback(text):
+    tts = gTTS(text=text, lang='en')  # en: 영어, ko: 한국어 등
+    audio_data = io.BytesIO()
+    tts.save(audio_data)
+    audio_data.seek(0)
+
+    return audio_data.read()
+
+
 def generate_frames():
     
     # set, reps, rest variable
-    global sets, sets_counter, reps, reps_counter, rest_time, is_rest, stage
+    global exerciseType, sets, sets_counter, reps, reps_counter, rest_time, is_rest, stage
+    
+    #exerciseType = 'dumbbellcurl'
+    #exerciseType = 'jumpingjack'
+    #exerciseType = 'lunge'
     
     sets = 3
     sets_counter = 1
@@ -59,8 +78,6 @@ def generate_frames():
 
 
     ## Setup mediapipe instance
-    # min_detection_confidence: 성공적인 것으로 간주되는 포즈 감지에 대한 최소 신뢰도 점수
-    # min_tracking_confidence: 성공적인 것으로 간주되는 포즈 추적에 대한 최소 신뢰도 점수
     with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as pose: # 값을 높일수록 더 자세히 탐지하지만 너무 정확하게 해서 아예 탐지 안될수도(trade off)
         while cap.isOpened():
             
@@ -81,26 +98,40 @@ def generate_frames():
             try:
                 landmarks = results.pose_landmarks.landmark
                 
-                # print(landmarks)
-                # print(len(landmarks))
-                
-                # for lndmrk in mp_pose.PoseLandmark:
-                #     print(lndmrk)
-                
                 # Get coordinates
-                shoulder = [landmarks[mp_pose.PoseLandmark.LEFT_SHOULDER.value].x,landmarks[mp_pose.PoseLandmark.LEFT_SHOULDER.value].y]
-                elbow = [landmarks[mp_pose.PoseLandmark.LEFT_ELBOW.value].x,landmarks[mp_pose.PoseLandmark.LEFT_ELBOW.value].y]
-                wrist = [landmarks[mp_pose.PoseLandmark.LEFT_WRIST.value].x,landmarks[mp_pose.PoseLandmark.LEFT_WRIST.value].y]
+                # dumbbell curl
+                leftShoulder = [landmarks[mp_pose.PoseLandmark.LEFT_SHOULDER.value].x,landmarks[mp_pose.PoseLandmark.LEFT_SHOULDER.value].y]
+                leftElbow = [landmarks[mp_pose.PoseLandmark.LEFT_ELBOW.value].x,landmarks[mp_pose.PoseLandmark.LEFT_ELBOW.value].y]
+                leftWrist = [landmarks[mp_pose.PoseLandmark.LEFT_WRIST.value].x,landmarks[mp_pose.PoseLandmark.LEFT_WRIST.value].y]
                 
+                rightHip = [landmarks[mp_pose.PoseLandmark.RIGHT_HIP.value].x,landmarks[mp_pose.PoseLandmark.RIGHT_HIP.value].y]
+                rightKnee = [landmarks[mp_pose.PoseLandmark.RIGHT_KNEE.value].x,landmarks[mp_pose.PoseLandmark.RIGHT_KNEE.value].y]
+                rightAnkle = [landmarks[mp_pose.PoseLandmark.RIGHT_ANKLE.value].x,landmarks[mp_pose.PoseLandmark.RIGHT_ANKLE.value].y]
+    
+                leftHip = [landmarks[mp_pose.PoseLandmark.LEFT_HIP.value].x,landmarks[mp_pose.PoseLandmark.LEFT_HIP.value].y]
+                leftKnee = [landmarks[mp_pose.PoseLandmark.LEFT_KNEE.value].x,landmarks[mp_pose.PoseLandmark.LEFT_KNEE.value].y]
+                leftAnkle = [landmarks[mp_pose.PoseLandmark.LEFT_ANKLE.value].x,landmarks[mp_pose.PoseLandmark.LEFT_ANKLE.value].y]
+
                 # Calculate angle
-                angle = calculate_angle(shoulder, elbow, wrist)
+                left_arm_angle = calculate_angle(leftShoulder, leftElbow, leftWrist)
+                right_leg_angle = calculate_angle(rightHip, rightKnee, rightAnkle)
+                left_leg_angle = calculate_angle(leftHip, leftKnee, leftAnkle)
                 
                 # Visualize angle
-                cv2.putText(image, str(angle), 
-                            tuple(np.multiply(elbow, [640, 480]).astype(int)), 
+                cv2.putText(image, str(left_arm_angle), 
+                            tuple(np.multiply(leftElbow, [640, 480]).astype(int)), 
                             cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA
-                                    )                  
+                                    )  
+                
+                cv2.putText(image, str(right_leg_angle), 
+                            tuple(np.multiply(rightKnee, [640, 480]).astype(int)), 
+                            cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA
+                                    )               
             
+                cv2.putText(image, str(left_leg_angle), 
+                            tuple(np.multiply(leftKnee, [640, 480]).astype(int)), 
+                            cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA
+                                    )      
                 # start timer
                 if reps_counter == reps and not is_rest and sets_counter < sets:
                     is_rest = True                    
@@ -133,13 +164,23 @@ def generate_frames():
                 
                 # count reps
                 if reps_counter < reps:
-                    if angle > 160:
-                        stage = "down"
-                    if angle < 60 and stage == "down":
-                        stage="up"
-                        lock.acquire()
-                        reps_counter += 1  
-                        lock.release()
+                    if exerciseType == 'dumbbellcurl':
+                        if left_arm_angle > 160:
+                            stage = "down"
+                        if left_arm_angle < 60 and stage == "down":
+                            stage="up"
+                            pluscounter()
+                            
+                    elif exerciseType == 'jumpingjack':
+                        pass
+                    elif exerciseType == 'lunge':
+                        if left_leg_angle < 100 and right_leg_angle < 100:
+                            stage = 'down'
+                        if left_leg_angle > 160 and right_leg_angle > 160 and stage == 'down':
+                            stage = 'up'
+                            pluscounter()
+                    else:
+                        print('exercise type error')
                     
                     cv2.putText(image, 'REPS', (15, 30), 
                                 cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 1, cv2.LINE_AA)
@@ -149,11 +190,6 @@ def generate_frames():
 
             except:
                 pass
-            
-            # Render detection and curl counter
-            # setup status box (startpoint, endpoint, color, )
-            
-
             
             mp_drawing.draw_landmarks(image, results.pose_landmarks, mp_pose.POSE_CONNECTIONS,
                                     mp_drawing.DrawingSpec(color=(245,117,66), thickness=2, circle_radius=2),
