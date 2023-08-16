@@ -4,7 +4,12 @@
     <title>WebCam Streaming with MediaPipe</title>
 </head>
 <body>
-    <h1>WebCam Streaming with MediaPipe</h1>
-    <img src="{% url 'webcam' %}" width="1000" height="600">
+    <h1>Exercise Tracker</h1>
+    <img id="video" src="" style="width:1000px; height:600px;" alt="Webcam Video">
+        
+    <script>
+        var video = document.getElementById('video');
+        video.src = "/video_feed";
+    </script>
 </body>
 </html>
