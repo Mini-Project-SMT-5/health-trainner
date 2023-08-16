@@ -61,8 +61,8 @@ def generate_frames():
     # set, reps, rest variable
     global exerciseType, sets, sets_counter, reps, reps_counter, rest_time, is_rest, stage
     
-    exerciseType = 'dumbbellcurl'
-    # exerciseType = 'jumpingjack'
+    # exerciseType = 'dumbbellcurl'
+    exerciseType = 'jumpingjack'
     # exerciseType = 'lunge'
     
     sets = 3
@@ -115,7 +115,7 @@ def generate_frames():
                 
                 # jumpingjack                
                 leftShoulder  = [landmarks[mp_pose.PoseLandmark.LEFT_SHOULDER.value].x,landmarks[mp_pose.PoseLandmark.LEFT_SHOULDER.value].y]
-                leftElbow = [landmarks[mp_pose.PoseLandmark.LEFT_ELBOW.value].x,landmarks[mp_pose.PoseLandmark.LEFT_ELBOW.value].y]
+                leftWrist = [landmarks[mp_pose.PoseLandmark.LEFT_WRIST.value].x,landmarks[mp_pose.PoseLandmark.LEFT_WRIST.value].y]
                 
                 
                 # counter
@@ -137,8 +137,8 @@ def generate_frames():
                         #jumpingjack
                         right_hip_angle = calculate_angle(leftHeel, rightHip, rightHeel)
                         left_hip_angle = calculate_angle(rightHeel, leftHip, leftHeel)
-                        right_shoulder_angle = calculate_angle(rightHip, rightShoulder, rightElbow)
-                        left_shoulder_angle = calculate_angle(leftHip, leftShoulder, leftElbow)
+                        right_shoulder_angle = calculate_angle(rightHip, rightShoulder, rightWrist)
+                        left_shoulder_angle = calculate_angle(leftHip, leftShoulder, leftWrist)
                         
                         cv2.putText(image, str(right_hip_angle), 
                                     tuple(np.multiply(rightHip, [640, 480]).astype(int)), 
@@ -157,7 +157,7 @@ def generate_frames():
                                     cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA
                                             )
                         
-                        if right_hip_angle > 30 and left_hip_angle > 30 and right_shoulder_angle > 100 and left_shoulder_angle > 100:
+                        if right_hip_angle > 30 and left_hip_angle > 30 and right_shoulder_angle > 130 and left_shoulder_angle > 130:
                             stage = 'down'
                         if right_hip_angle < 8 and left_hip_angle < 8 and right_shoulder_angle < 15 and left_shoulder_angle < 15 and stage == 'down':
                             stage = 'up'
