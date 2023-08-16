@@ -61,9 +61,9 @@ def generate_frames():
     # set, reps, rest variable
     global exerciseType, sets, sets_counter, reps, reps_counter, rest_time, is_rest, stage
     
-    #exerciseType = 'dumbbellcurl'
-    #exerciseType = 'jumpingjack'
-    #exerciseType = 'lunge'
+    exerciseType = 'dumbbellcurl'
+    # exerciseType = 'jumpingjack'
+    # exerciseType = 'lunge'
     
     sets = 3
     sets_counter = 1
@@ -100,38 +100,101 @@ def generate_frames():
                 
                 # Get coordinates
                 # dumbbell curl
-                leftShoulder = [landmarks[mp_pose.PoseLandmark.LEFT_SHOULDER.value].x,landmarks[mp_pose.PoseLandmark.LEFT_SHOULDER.value].y]
-                leftElbow = [landmarks[mp_pose.PoseLandmark.LEFT_ELBOW.value].x,landmarks[mp_pose.PoseLandmark.LEFT_ELBOW.value].y]
-                leftWrist = [landmarks[mp_pose.PoseLandmark.LEFT_WRIST.value].x,landmarks[mp_pose.PoseLandmark.LEFT_WRIST.value].y]
+                rightShoulder = [landmarks[mp_pose.PoseLandmark.RIGHT_SHOULDER.value].x,landmarks[mp_pose.PoseLandmark.RIGHT_SHOULDER.value].y]
+                rightElbow = [landmarks[mp_pose.PoseLandmark.RIGHT_ELBOW.value].x,landmarks[mp_pose.PoseLandmark.RIGHT_ELBOW.value].y]
+                rightWrist = [landmarks[mp_pose.PoseLandmark.RIGHT_WRIST.value].x,landmarks[mp_pose.PoseLandmark.RIGHT_WRIST.value].y]
                 
+                # lunge
                 rightHip = [landmarks[mp_pose.PoseLandmark.RIGHT_HIP.value].x,landmarks[mp_pose.PoseLandmark.RIGHT_HIP.value].y]
                 rightKnee = [landmarks[mp_pose.PoseLandmark.RIGHT_KNEE.value].x,landmarks[mp_pose.PoseLandmark.RIGHT_KNEE.value].y]
-                rightAnkle = [landmarks[mp_pose.PoseLandmark.RIGHT_ANKLE.value].x,landmarks[mp_pose.PoseLandmark.RIGHT_ANKLE.value].y]
+                rightHeel = [landmarks[mp_pose.PoseLandmark.RIGHT_HEEL.value].x,landmarks[mp_pose.PoseLandmark.RIGHT_HEEL.value].y]
     
                 leftHip = [landmarks[mp_pose.PoseLandmark.LEFT_HIP.value].x,landmarks[mp_pose.PoseLandmark.LEFT_HIP.value].y]
                 leftKnee = [landmarks[mp_pose.PoseLandmark.LEFT_KNEE.value].x,landmarks[mp_pose.PoseLandmark.LEFT_KNEE.value].y]
-                leftAnkle = [landmarks[mp_pose.PoseLandmark.LEFT_ANKLE.value].x,landmarks[mp_pose.PoseLandmark.LEFT_ANKLE.value].y]
+                leftHeel = [landmarks[mp_pose.PoseLandmark.LEFT_HEEL.value].x,landmarks[mp_pose.PoseLandmark.LEFT_HEEL.value].y]
+                
+                # jumpingjack                
+                leftShoulder  = [landmarks[mp_pose.PoseLandmark.LEFT_SHOULDER.value].x,landmarks[mp_pose.PoseLandmark.LEFT_SHOULDER.value].y]
+                leftElbow = [landmarks[mp_pose.PoseLandmark.LEFT_ELBOW.value].x,landmarks[mp_pose.PoseLandmark.LEFT_ELBOW.value].y]
+                
+                
+                # counter
+                if reps_counter < reps:
+                    if exerciseType == 'dumbbellcurl':
+                        right_arm_angle = calculate_angle(rightShoulder, rightElbow, rightWrist)
+                        
+                        cv2.putText(image, str(right_arm_angle), 
+                                    tuple(np.multiply(rightElbow, [640, 480]).astype(int)), 
+                                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA
+                                            )  
+                        if right_arm_angle > 150:
+                            stage = "down"
+                        if right_arm_angle < 60 and stage == "down":
+                            stage="up"
+                            pluscounter()    
 
-                # Calculate angle
-                left_arm_angle = calculate_angle(leftShoulder, leftElbow, leftWrist)
-                right_leg_angle = calculate_angle(rightHip, rightKnee, rightAnkle)
-                left_leg_angle = calculate_angle(leftHip, leftKnee, leftAnkle)
+                    elif exerciseType == 'jumpingjack':
+                        #jumpingjack
+                        right_hip_angle = calculate_angle(leftHeel, rightHip, rightHeel)
+                        left_hip_angle = calculate_angle(rightHeel, leftHip, leftHeel)
+                        right_shoulder_angle = calculate_angle(rightHip, rightShoulder, rightElbow)
+                        left_shoulder_angle = calculate_angle(leftHip, leftShoulder, leftElbow)
+                        
+                        cv2.putText(image, str(right_hip_angle), 
+                                    tuple(np.multiply(rightHip, [640, 480]).astype(int)), 
+                                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA
+                                            )               
+                        cv2.putText(image, str(left_hip_angle), 
+                                    tuple(np.multiply(leftHip, [640, 480]).astype(int)), 
+                                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA
+                                            )  
+                        cv2.putText(image, str(right_shoulder_angle), 
+                                    tuple(np.multiply(rightShoulder, [640, 480]).astype(int)), 
+                                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA
+                                            )               
+                        cv2.putText(image, str(left_shoulder_angle), 
+                                    tuple(np.multiply(leftShoulder, [640, 480]).astype(int)), 
+                                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA
+                                            )
+                        
+                        if right_hip_angle > 30 and left_hip_angle > 30 and right_shoulder_angle > 100 and left_shoulder_angle > 100:
+                            stage = 'down'
+                        if right_hip_angle < 8 and left_hip_angle < 8 and right_shoulder_angle < 15 and left_shoulder_angle < 15 and stage == 'down':
+                            stage = 'up'
+                            pluscounter()
+                            
+                        
+                        
+                        
+                    
+                    elif exerciseType == 'lunge':
+                        right_leg_angle = calculate_angle(rightHip, rightKnee, rightHeel)
+                        left_leg_angle = calculate_angle(leftHip, leftKnee, leftHeel)
+                        
+                        cv2.putText(image, str(right_leg_angle), 
+                                    tuple(np.multiply(rightKnee, [640, 480]).astype(int)), 
+                                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA
+                                            )               
+                        cv2.putText(image, str(left_leg_angle), 
+                                    tuple(np.multiply(leftKnee, [640, 480]).astype(int)), 
+                                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA
+                                            )      
+                            
+                        if left_leg_angle < 100 and right_leg_angle < 100:
+                            stage = 'down'
+                        if left_leg_angle > 160 and right_leg_angle > 160 and stage == 'down':
+                            stage = 'up'
+                            pluscounter()
+                            
+                    else:
+                        print('exercise type error')
+                        
+                    cv2.putText(image, 'REPS', (15, 30), 
+                                cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 1, cv2.LINE_AA)
+                    cv2.putText(image, str(reps_counter),
+                                (30, 80),
+                                cv2.FONT_HERSHEY_SIMPLEX, 1.5, (0, 0, 0), 2, cv2.LINE_AA)        
                 
-                # Visualize angle
-                cv2.putText(image, str(left_arm_angle), 
-                            tuple(np.multiply(leftElbow, [640, 480]).astype(int)), 
-                            cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA
-                                    )  
-                
-                cv2.putText(image, str(right_leg_angle), 
-                            tuple(np.multiply(rightKnee, [640, 480]).astype(int)), 
-                            cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA
-                                    )               
-            
-                cv2.putText(image, str(left_leg_angle), 
-                            tuple(np.multiply(leftKnee, [640, 480]).astype(int)), 
-                            cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA
-                                    )      
                 # start timer
                 if reps_counter == reps and not is_rest and sets_counter < sets:
                     is_rest = True                    
@@ -145,10 +208,6 @@ def generate_frames():
                 
                 # work out done
                 if sets_counter == sets and reps_counter == reps:
-                    # Rep data
-                    cv2.putText(image, 'Completed', (15, 60), 
-                                cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 0, 0), 2, cv2.LINE_AA)
-                    
                     mp_drawing.draw_landmarks(image, results.pose_landmarks, mp_pose.POSE_CONNECTIONS,
                                     mp_drawing.DrawingSpec(color=(245,117,66), thickness=2, circle_radius=2),
                                     mp_drawing.DrawingSpec(color=(245,66,230), thickness=2, circle_radius=2)
@@ -159,34 +218,7 @@ def generate_frames():
                     
                     yield (b'--frame\r\n'
                         b'Content-Type: image/jpeg\r\n\r\n' + render_image+ b'\r\n')
-                    
-                    break
-                
-                # count reps
-                if reps_counter < reps:
-                    if exerciseType == 'dumbbellcurl':
-                        if left_arm_angle > 160:
-                            stage = "down"
-                        if left_arm_angle < 60 and stage == "down":
-                            stage="up"
-                            pluscounter()
-                            
-                    elif exerciseType == 'jumpingjack':
-                        pass
-                    elif exerciseType == 'lunge':
-                        if left_leg_angle < 100 and right_leg_angle < 100:
-                            stage = 'down'
-                        if left_leg_angle > 160 and right_leg_angle > 160 and stage == 'down':
-                            stage = 'up'
-                            pluscounter()
-                    else:
-                        print('exercise type error')
-                    
-                    cv2.putText(image, 'REPS', (15, 30), 
-                                cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 0), 1, cv2.LINE_AA)
-                    cv2.putText(image, str(reps_counter),
-                                (30, 80),
-                                cv2.FONT_HERSHEY_SIMPLEX, 1.5, (0, 0, 0), 2, cv2.LINE_AA)              
+                    break     
 
             except:
                 pass
