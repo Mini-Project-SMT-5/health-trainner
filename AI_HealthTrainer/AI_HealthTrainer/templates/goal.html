@@ -23,20 +23,19 @@
     </p>
     <div class="date-section">
       <img class="date-border" src="./assets/rectangle-10.png"/>
-      <p class="start-label">Start Date</p>
-      <div class="start-box"></div>
-      <p class="end-label">End Date</p>
-      <div class="end-box"></div>
-      <form action="">
-        <input type="date" class="start-text">
-        <input type="date" class="end-text">
-        <input type="number" step="1">
-        <input type="submit" value="submit">
+      <form action="" method="post"> <!--여기에 하면 되-->
+        <label for="start-date" class="start-label">Start Date</label>
+        <input type="date" id="start-date" name="start-date" class="start-text">
+
+        <label for="end-date" class="end-label">End Date</label>
+        <input type="date" id="end-date" name="end-date" class="end-text">
+
+        <label for="goal" class="goal-label">Goal</label>
+        <input type="number" id="goal" name="goal" step="1">
+
+        <input type="submit" value="Submit">
       </form>
     </div>
-    <p class="goal-label">Goal </p>
-    <div class="goal-box"></div>
-    
   </div>
 </div>
 </body>
