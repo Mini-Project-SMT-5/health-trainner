@@ -11,6 +11,7 @@
 
     <script>
         var video = document.getElementById('video');
+        var prev_feedback = "";
         video.src = "/video_feed";
 
         function fetchData() {
@@ -18,16 +19,31 @@
                 .then(response => response.json())
                 .then(data => {
                     const userInfoElement = document.getElementById("feedback");
+                    var feedback_text = data.textData
                     userInfoElement.innerHTML = `
-                        <strong>Feedback:</strong> ${data.textData}<br>
+                        <strong>Feedback:</strong> ${feedback_text}<br>
                     `;
+                    
+                    if (feedback_text != prev_feedback){
+                        prev_feedback = feedback_text;
+                        return textToSpeech(feedback_text);
+                    }
                 })
                 .catch(error => {
                     console.error("Error fetching data:", error);
                 });
         }
-    
-        setInterval(fetchData, 100);
+
+        let synth = speechSynthesis;
+        
+        function textToSpeech(text) {
+            console.log("call textToSpeech");
+            let utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'en'
+            synth.speak(utterance);
+            
+        }
+
+        setInterval(fetchData, 300);
     </script>
 </body>
-</html>

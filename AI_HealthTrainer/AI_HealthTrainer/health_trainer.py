@@ -16,10 +16,10 @@ channel_layer = get_channel_layer()
 global feedback_text, reps_counter
 
 reps_counter = 0
-feedback_text = reps_counter
+feedback_text = ""
 
 def rest():
-    global sets_counter, reps_counter, stage, is_rest
+    global sets_counter, reps_counter, stage, is_rest, feedback_text
     time.sleep(rest_time)
     
     lock.acquire()
@@ -27,6 +27,7 @@ def rest():
     sets_counter += 1
     stage = None
     is_rest = False
+    feedback_text = "Rest time is over, Let's workout"
     lock.release()
 
 
@@ -46,7 +47,7 @@ def calculate_angle(a,b,c):
 
 
 def send_feedback():
-    global feedback_text
+    global feedback_text    
     return feedback_text
 
 
@@ -61,7 +62,7 @@ def pluscounter():
 def generate_frames():
     
     # set, reps, rest variable
-    global exerciseType, sets, sets_counter, reps, reps_counter, rest_time, is_rest, stage, feedback_text, max_arm_angle, min_arm_angle
+    global exerciseType, sets, sets_counter, reps, reps_counter, rest_time, is_rest, stage, feedback_text, min_arm_angle
     
     exerciseType = 'dumbbellcurl'
     # exerciseType = 'jumpingjack'
@@ -73,10 +74,9 @@ def generate_frames():
     rest_time = 5
     is_rest = False    
     stage = None
-    max_arm_angle = 0
     min_arm_angle = 180
     bend = False
-    
+
     # Video Feed
     cap = cv2.VideoCapture(0) # setup video capture camera
 
@@ -136,28 +136,23 @@ def generate_frames():
                         min_arm_angle = min(right_arm_angle, min_arm_angle)
                         
                         if right_arm_angle > 90 and bend: # feedback이나 개수를 올려줘야 함
-                            print("after bend")
                             if right_arm_angle > 150:
+                                bend = False
                                 if stage == "down":
                                     feedback_text = "bend your arms more"
+                                    
                                 elif stage == "up":
                                     stage = "down"
-                                    bend = False
                                     pluscounter()
+                                                
                                     feedback_text = str(reps_counter)
                                     min_arm_angle = 180
-                            elif right_arm_angle <= 150:
-                                if stage == "down":
-                                    feedback_text = "stretch and bend your arms more"
-                                elif stage == "up":
-                                    feedback_text = "stretch your arms more"
                                     
                         if min_arm_angle < 90:
                             bend = True
-                            if min_arm_angle < 60:
+                            if min_arm_angle < 40:
                                 stage = "up"
                         
-                        # stage 로 양 끝 달성 여부 체크, bend로 굽힘 여부 체크
                             
                     elif exerciseType == 'jumpingjack':
                         #jumpingjack
@@ -231,7 +226,7 @@ def generate_frames():
                 if reps_counter == reps and is_rest and sets_counter < sets:
                     cv2.putText(image, 'REST!', (15, 60), 
                             cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 0, 0), 2, cv2.LINE_AA)
-                    feedback_text = ""
+                    feedback_text = str(rest_time)+ "seconds rest"
                 
                 # work out done
                 if sets_counter == sets and reps_counter == reps:
@@ -242,7 +237,7 @@ def generate_frames():
             
                     ret, buffer = cv2.imencode('.jpg', image)
                     render_image = buffer.tobytes()
-                    feedback_text = ""
+                    feedback_text = "All sets is done, congratulation!"
                     
                     yield (b'--frame\r\n'
                         b'Content-Type: image/jpeg\r\n\r\n' + render_image+ b'\r\n')
