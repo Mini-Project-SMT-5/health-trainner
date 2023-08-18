@@ -7,7 +7,7 @@
     <h1>Exercise Tracker</h1>
     <img id="video" src="" style="width:1000px; height:600px;" alt="Webcam Video">
 
-    <p id="user-info"> loading data </p>
+    <p id="feedback"></p>
 
     <script>
         var video = document.getElementById('video');
@@ -17,9 +17,9 @@
             fetch("/get_feedback/")
                 .then(response => response.json())
                 .then(data => {
-                    const userInfoElement = document.getElementById("user-info");
+                    const userInfoElement = document.getElementById("feedback");
                     userInfoElement.innerHTML = `
-                        <strong>Name:</strong> ${data.textData}<br>
+                        <strong>Feedback:</strong> ${data.textData}<br>
                     `;
                 })
                 .catch(error => {
