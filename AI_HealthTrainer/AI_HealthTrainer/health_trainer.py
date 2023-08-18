@@ -2,16 +2,21 @@ from django.shortcuts import render
 from django.http import StreamingHttpResponse, JsonResponse
 
 import time, json, cv2, threading, io, numpy as np, mediapipe as mp
-from gtts import gTTS
 from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
 from channels.layers import get_channel_layer
+from asgiref.sync import async_to_sync
 
 mp_drawing = mp.solutions.drawing_utils # pose를 시각화해줌 (drawing utilities를 제공)
 mp_pose = mp.solutions.pose # mediapipe에서 여러가지 모델들 중 pose model을 가져옴
 
 lock = threading.Lock()
 channel_layer = get_channel_layer()
+
+global feedback_text, reps_counter
+
+reps_counter = 0
+feedback_text = reps_counter
 
 def rest():
     global sets_counter, reps_counter, stage, is_rest
@@ -40,38 +45,37 @@ def calculate_angle(a,b,c):
     return angle 
 
 
+def send_feedback():
+    global feedback_text
+    return feedback_text
+
+
 def pluscounter():
     global reps_counter
     
     lock.acquire()
-    reps_counter += 1  
+    reps_counter += 1
     lock.release()     
-
-def generate_audio_feedback(text):
-    tts = gTTS(text=text, lang='en')  # en: 영어, ko: 한국어 등
-    audio_data = io.BytesIO()
-    tts.save(audio_data)
-    audio_data.seek(0)
-
-    return audio_data.read()
 
 
 def generate_frames():
     
     # set, reps, rest variable
-    global exerciseType, sets, sets_counter, reps, reps_counter, rest_time, is_rest, stage
+    global exerciseType, sets, sets_counter, reps, reps_counter, rest_time, is_rest, stage, feedback_text, max_arm_angle, min_arm_angle
     
-    # exerciseType = 'dumbbellcurl'
-    exerciseType = 'jumpingjack'
+    exerciseType = 'dumbbellcurl'
+    # exerciseType = 'jumpingjack'
     # exerciseType = 'lunge'
     
     sets = 3
     sets_counter = 1
     reps = 5
-    reps_counter = 0
     rest_time = 5
     is_rest = False    
     stage = None
+    max_arm_angle = 0
+    min_arm_angle = 180
+    bend = False
     
     # Video Feed
     cap = cv2.VideoCapture(0) # setup video capture camera
@@ -82,6 +86,7 @@ def generate_frames():
         while cap.isOpened():
             
             ret, frame = cap.read() #frame: webcam의 image가 담김
+            arm_status = None
             
             # Recolor image to RGB (opencv는 BGR을 mediapipe는 RGB를 사용해서 BGR을 RGB로 바꿔준다)
             image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -126,13 +131,34 @@ def generate_frames():
                         cv2.putText(image, str(right_arm_angle), 
                                     tuple(np.multiply(rightElbow, [640, 480]).astype(int)), 
                                     cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA
-                                            )  
-                        if right_arm_angle > 150:
-                            stage = "down"
-                        if right_arm_angle < 60 and stage == "down":
-                            stage="up"
-                            pluscounter()    
-
+                                            )
+                        
+                        min_arm_angle = min(right_arm_angle, min_arm_angle)
+                        
+                        if right_arm_angle > 90 and bend: # feedback이나 개수를 올려줘야 함
+                            print("after bend")
+                            if right_arm_angle > 150:
+                                if stage == "down":
+                                    feedback_text = "bend your arms more"
+                                elif stage == "up":
+                                    stage = "down"
+                                    bend = False
+                                    pluscounter()
+                                    feedback_text = str(reps_counter)
+                                    min_arm_angle = 180
+                            elif right_arm_angle <= 150:
+                                if stage == "down":
+                                    feedback_text = "stretch and bend your arms more"
+                                elif stage == "up":
+                                    feedback_text = "stretch your arms more"
+                                    
+                        if min_arm_angle < 90:
+                            bend = True
+                            if min_arm_angle < 60:
+                                stage = "up"
+                        
+                        # stage 로 양 끝 달성 여부 체크, bend로 굽힘 여부 체크
+                            
                     elif exerciseType == 'jumpingjack':
                         #jumpingjack
                         right_hip_angle = calculate_angle(leftHeel, rightHip, rightHeel)
@@ -205,6 +231,7 @@ def generate_frames():
                 if reps_counter == reps and is_rest and sets_counter < sets:
                     cv2.putText(image, 'REST!', (15, 60), 
                             cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 0, 0), 2, cv2.LINE_AA)
+                    feedback_text = ""
                 
                 # work out done
                 if sets_counter == sets and reps_counter == reps:
@@ -215,6 +242,7 @@ def generate_frames():
             
                     ret, buffer = cv2.imencode('.jpg', image)
                     render_image = buffer.tobytes()
+                    feedback_text = ""
                     
                     yield (b'--frame\r\n'
                         b'Content-Type: image/jpeg\r\n\r\n' + render_image+ b'\r\n')

@@ -22,4 +22,5 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path('', views.index, name='index'),
     path('video_feed/', views.video_feed, name='video_feed'),
+    path('get_feedback/', views.get_feedback, name='get_feedback'),
 ]
