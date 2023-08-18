@@ -25,17 +25,17 @@ fetch("") // 서버 주소
 
 const progressBar = document.getElementsByClassName("progress-bar")[0]; 
 const progressBg = document.getElementsByClassName("progress-bg")[0];
-const maxWidth = parseFloat(window.getComputedStyle(progressBg).width); // 'progress-bg'의 최대 넓이를 가져옵니다.
-progressBar.style.width = (maxWidth * doneRatio / 100) + "px"; // 'progress-bar'의 넓이를 설정합니다.  
+const maxWidth = parseFloat(window.getComputedStyle(progressBg).width); 
+progressBar.style.width = (maxWidth * doneRatio / 100) + "px"; 
 
 document.getElementsByClassName("start-button")[0].addEventListener("click", function() {
-    window.location.href = "././index.html";
+    window.location.href = "././time.html";
 });
 
 document.getElementsByClassName("set-goal-indicator")[0].addEventListener("click", function() {
-    window.location.href = "././index.html";
+    window.location.href = "././goal.html";
 });
 
 document.getElementsByClassName("set-goal-text")[0].addEventListener("click", function() {
-    window.location.href = "././index.html";
+    window.location.href = "././goal.html";
 });

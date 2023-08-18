@@ -41,6 +41,6 @@ document.getElementById("set-num").addEventListener("click", function () {
     if (setE) { 
         doneSet++;
         setE.innerText = doneSet + "/" + totalSet;
-        if (doneSet == totalSet) window.location.href = "./index.html";
+        if (doneSet == totalSet) window.location.href = "./compeletion.html";
     }
 }); // 수행한 세트 수 변경
