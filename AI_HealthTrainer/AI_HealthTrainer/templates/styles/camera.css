@@ -147,7 +147,10 @@ body {
     transform: translateY(-50%);
     color: #000000;
 }
-
+#feedback {
+    font-size: 3rem;
+    color: #ffffff;
+}
 /* Media queries for larger screens */
 @media (min-width: 1024px) {
     html {

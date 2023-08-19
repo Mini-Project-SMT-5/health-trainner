@@ -1,4 +1,4 @@
-var totalSet, doneSet, mins, secs;
+var totalSet, doneSet, mins, secs, feedback;
 
 fetch("") // 서버 주소
     .then(response => {
@@ -10,10 +10,12 @@ fetch("") // 서버 주소
         doneSet = data.doneSet;
         mins = data.mins;
         secs = data.secs;
+        feedback = data.feedback;
 
         document.getElementById("set-num").innerText = doneSet + "/" + totalSet;
         document.getElementById("mins").innerText = mins;
         document.getElementById("seconds").innerText = secs;
+        document.getElementById("feedback").innerText = feedback;
     })
     .catch(error => {
         console.error("There was a problem with the fetch operation:", error);
