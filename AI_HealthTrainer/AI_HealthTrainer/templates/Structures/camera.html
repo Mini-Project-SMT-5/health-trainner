@@ -12,61 +12,22 @@
 </head>
 <body>
 <div class="camera-main">
-  <p class="header-title">CAMERA</p>
+  <p class="header-title">CAMERA</p>  
   <div class="camera-header">
-    <div class="header-bg"><img id="camera-viewer" src="" alt="Webcam Video"></div>
+    <div class="header-bg"><img id="camera-viewer" src="" alt="Webcam Video" data-sets="{{ sets_value }}" data-reps="{{ reps_value }}" data-rest="{{ rest_value }}"></div>
   </div>
   <div class="camera-info">
     <div class="info-bg1"></div>
     <div class="info-bg2"></div>
-    <p class="time-text" id="mins">10</p>
+    <p class="time-text" id="mins">00</p>
     <p class="time-text" id="min-unit">min</p>
     <p class="time-text" id="seconds">00</p>
     <p class="time-text" id="second-unit">sec</p>
-    <p class="set-text" id="set-num">1/3</p>
+    <p class="set-text" id="set-num">0/0</p>
     <p class="set-text" id="set-unit">sets</p>
   </div>
 </div>
 <p id="feedback"></p>
 <script src="{% static 'javascripts/indexforCamera.js' %}"></script>
-<script>
-  var video = document.getElementById('camera-viewer');
-  var prev_feedback = "";
-  var param1Value = "value1"; // 원하는 값으로 설정
-  var param2Value = "value2"; // 원하는 값으로 설정
-  video.src = "/video_feed?param1=" + param1Value + "&param2=" + param2Value;";
-
-  function fetchData() {
-      fetch("/get_feedback/")
-          .then(response => response.json())
-          .then(data => {
-              const userInfoElement = document.getElementById("feedback");
-              var feedback_text = data.textData
-              userInfoElement.innerHTML = `
-                  <strong>Feedback:</strong> ${feedback_text}<br>
-              `;
-              
-              if (feedback_text != prev_feedback){
-                  prev_feedback = feedback_text;
-                  return textToSpeech(feedback_text);
-              }
-          })
-          .catch(error => {
-              console.error("Error fetching data:", error);
-          });
-  }
-
-  let synth = speechSynthesis;
-  
-  function textToSpeech(text) {
-      console.log("call textToSpeech");
-      let utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'en'
-      synth.speak(utterance);
-      
-  }
-
-  setInterval(fetchData, 300);
-</script>
 </body>
 </html>

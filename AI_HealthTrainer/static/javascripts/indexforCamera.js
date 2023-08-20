@@ -1,48 +1,91 @@
-var totalSet, doneSet, mins, secs, feedback;
+var totalSet, doneSet, mins, secs, storeMin, storeSec;
+var prev_feedback = "";
+let synth = speechSynthesis;
+var video = document.getElementById('camera-viewer');
+var sets = video.getAttribute('data-sets');
+var reps = video.getAttribute('data-reps');
+var rest = video.getAttribute('data-rest');
+video.src = "/video_feed?set=" + sets + "&reps=" + reps + "&rest=" + rest;
 
-fetch("") // 서버 주소
-    .then(response => {
-        if (!response.ok) throw new Error("Network response was not ok");
-        return response.json();
-    })
+function countdown() {
+    if (secs > 0) {
+        secs--;
+    } else if (mins > 0) {
+        mins--;
+        secs = 59;
+    } else {
+        clearInterval(interval);
+        return;
+    }
+    document.getElementById("mins").innerText = String(mins);
+    document.getElementById("seconds").innerText = String(secs);
+}
+
+function fetchFirst() {   
+    totalSet = parseInt(sets);
+    doneSet = 1;
+    mins = Math.floor(parseInt(rest) / 60);
+    secs = parseInt(rest) % 60;
+    storeMin = mins;
+    storeSec = secs;
+
+    document.getElementById("set-num").innerText = doneSet + "/" + totalSet;
+    document.getElementById("mins").innerText = String(mins);
+    document.getElementById("seconds").innerText = String(secs);
+}
+
+function fetchData() {
+    fetch("/get_feedback/")
+        .then(response => response.json())
+        .then(data => {
+            const userInfoElement = document.getElementById("feedback");
+            var feedback_text = data.textData
+            userInfoElement.innerHTML = `
+                ${feedback_text}<br>
+            `;
+            
+            if (feedback_text != prev_feedback){
+                prev_feedback = feedback_text;
+                return textToSpeech(feedback_text);
+            }
+            
+            if (feedback_text === "Rest") {
+                countdown();
+            } else if (feedback_text === "Rest time is over, Let's workout") {
+                mins = storeMin;
+                secs = storeSec;
+                var temp = document.getElementById("set-num").innerText;
+                temp = parseInt(temp) + 1;
+            } else if (feedback_text === "All sets is done, congratulation!") {
+                reqRedirect();
+            }
+
+        })
+        .catch(error => {
+            console.error("Error fetching data:", error);
+        });
+}
+
+function reqRedirect() {
+    fetch('') //redirection
+    .then(response => response.json())
     .then(data => {
-        totalSet = data.totalSet;
-        doneSet = data.doneSet;
-        mins = data.mins;
-        secs = data.secs;
-        feedback = data.feedback;
-
-        document.getElementById("set-num").innerText = doneSet + "/" + totalSet;
-        document.getElementById("mins").innerText = mins;
-        document.getElementById("seconds").innerText = secs;
-        document.getElementById("feedback").innerText = feedback;
+    if (data.redirectUrl) {
+        window.location.href = data.redirectUrl;
+    }
     })
-    .catch(error => {
-        console.error("There was a problem with the fetch operation:", error);
-    });
+    .catch(error => console.error('Error:', error));
 
-document.getElementById("min-unit").addEventListener("click", function () {
-    const minE = document.getElementById("mins");
-    const secE = document.getElementById("seconds");
-    if (minE && secE) { 
-        mins = parseInt(minE.innerText);
-        secs = parseInt(secE.innerText);
+}
 
-        if (secs > 0) secs--;
-        else {
-            mins--;
-            secs = 59;
-            minE.innerText = mins;
-        }
-        secE.innerText = secs;
-    }
-}); // 시간 변경
+function textToSpeech(text) {
+    console.log("call textToSpeech");
+    let utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'en'
+    synth.speak(utterance);
+    
+}
 
-document.getElementById("set-num").addEventListener("click", function () {
-    const setE = document.getElementById("set-num");
-    if (setE) { 
-        doneSet++;
-        setE.innerText = doneSet + "/" + totalSet;
-        if (doneSet == totalSet) window.location.href = "./compeletion.html";
-    }
-}); // 수행한 세트 수 변경
+fetchFirst();
+setInterval(fetchData, 300);
+
