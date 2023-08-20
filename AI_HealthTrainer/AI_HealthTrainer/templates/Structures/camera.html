@@ -32,7 +32,9 @@
 <script>
   var video = document.getElementById('camera-viewer');
   var prev_feedback = "";
-  video.src = "/video_feed";
+  var param1Value = "value1"; // 원하는 값으로 설정
+  var param2Value = "value2"; // 원하는 값으로 설정
+  video.src = "/video_feed?param1=" + param1Value + "&param2=" + param2Value;";
 
   function fetchData() {
       fetch("/get_feedback/")
