@@ -148,7 +148,7 @@ def generate_frames(set_value, reps_value, rest_value):
                                     
                         if min_arm_angle < 90:
                             bend = True
-                            if min_arm_angle < 40:
+                            if min_arm_angle < 60:
                                 stage = "up"
                         
                             
