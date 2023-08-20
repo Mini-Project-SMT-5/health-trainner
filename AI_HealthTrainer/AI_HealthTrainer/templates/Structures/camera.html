@@ -12,7 +12,7 @@
 </head>
 <body>
 <div class="camera-main">
-  <p class="header-title">CAMERA</p>
+  <p class="header-title">CAMERA</p>  
   <div class="camera-header">
     <div class="header-bg"><img id="camera-viewer" src="" alt="Webcam Video"></div>
   </div>
@@ -30,41 +30,7 @@
 <p id="feedback"></p>
 <script src="{% static 'javascripts/indexforCamera.js' %}"></script>
 <script>
-  var video = document.getElementById('camera-viewer');
-  var prev_feedback = "";
-  video.src = "/video_feed";
 
-  function fetchData() {
-      fetch("/get_feedback/")
-          .then(response => response.json())
-          .then(data => {
-              const userInfoElement = document.getElementById("feedback");
-              var feedback_text = data.textData
-              userInfoElement.innerHTML = `
-                  <strong>Feedback:</strong> ${feedback_text}<br>
-              `;
-              
-              if (feedback_text != prev_feedback){
-                  prev_feedback = feedback_text;
-                  return textToSpeech(feedback_text);
-              }
-          })
-          .catch(error => {
-              console.error("Error fetching data:", error);
-          });
-  }
-
-  let synth = speechSynthesis;
-  
-  function textToSpeech(text) {
-      console.log("call textToSpeech");
-      let utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'en'
-      synth.speak(utterance);
-      
-  }
-
-  setInterval(fetchData, 300);
 </script>
 </body>
 </html>

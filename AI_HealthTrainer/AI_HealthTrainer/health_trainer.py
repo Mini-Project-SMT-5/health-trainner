@@ -4,14 +4,12 @@ from django.http import StreamingHttpResponse, JsonResponse
 import time, json, cv2, threading, io, numpy as np, mediapipe as mp
 from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
-from channels.layers import get_channel_layer
 from asgiref.sync import async_to_sync
 
 mp_drawing = mp.solutions.drawing_utils # pose를 시각화해줌 (drawing utilities를 제공)
 mp_pose = mp.solutions.pose # mediapipe에서 여러가지 모델들 중 pose model을 가져옴
 
 lock = threading.Lock()
-channel_layer = get_channel_layer()
 
 global feedback_text, reps_counter
 
@@ -226,7 +224,7 @@ def generate_frames():
                 if reps_counter == reps and is_rest and sets_counter < sets:
                     cv2.putText(image, 'REST!', (15, 60), 
                             cv2.FONT_HERSHEY_SIMPLEX, 1.2, (0, 0, 0), 2, cv2.LINE_AA)
-                    feedback_text = str(rest_time)+ "seconds rest"
+                    feedback_text = "Rest"
                 
                 # work out done
                 if sets_counter == sets and reps_counter == reps:
