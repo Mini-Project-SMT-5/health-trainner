@@ -1,10 +1,11 @@
 var totalSet, doneSet, mins, secs, storeMin, storeSec, interval;
-var video = document.getElementById('camera-viewer');
 var prev_feedback = "";
-video.src = "/video_feed";
 let synth = speechSynthesis;
-
-//-----------------------------------------------------------------------------------------
+var video = document.getElementById('camera-viewer');
+var sets = video.getAttribute('data-sets');
+var reps = video.getAttribute('data-reps');
+var rest = video.getAttribute('data-rest');
+video.src = "/video_feed?set=" + sets + "&reps=" + reps + "&rest=" + rest;
 
 function countdown() {
     if (secs > 0) {
@@ -21,30 +22,17 @@ function countdown() {
     document.getElementById("seconds").innerText = String(secs);
 }
 
-function fetchFirst() {
-    fetch("") // 서버 주소
-    .then(response => {
-        if (!response.ok) throw new Error("Network response was not ok");
-        return response.json();
-    })
-    .then(data => {
-        totalSet = data.totalSet;
-        doneSet = data.doneSet;
-        mins = data.mins;
-        secs = data.secs;
-        storeMin = mins;
-        storeSec = secs;
+function fetchFirst() {   
+    totalSet = parseInt(sets);
+    doneSet = 1;
+    mins = Math.floor(parseInt(rest) / 60);
+    secs = parseInt(rest) % 60;
+    storeMin = mins;
+    storeSec = secs;
 
-        document.getElementById("set-num").innerText = doneSet + "/" + totalSet;
-        document.getElementById("mins").innerText = String(mins);
-        document.getElementById("seconds").innerText = String(secs);
-    })
-    .catch(error => {
-        console.error("There was a problem with the fetch operation:", error);
-        mins = 0; secs = 5;
-        storeMin = mins; storeSec = secs;
-    });
-
+    document.getElementById("set-num").innerText = doneSet + "/" + totalSet;
+    document.getElementById("mins").innerText = String(mins);
+    document.getElementById("seconds").innerText = String(secs);
 }
 
 function fetchData() {
@@ -54,7 +42,7 @@ function fetchData() {
             const userInfoElement = document.getElementById("feedback");
             var feedback_text = data.textData
             userInfoElement.innerHTML = `
-                 ${feedback_text}<br>
+                ${feedback_text}<br>
             `;
             
             if (feedback_text != prev_feedback){
@@ -94,7 +82,7 @@ function reqRedirect() {
     if (data.redirectUrl) {
         window.location.href = data.redirectUrl;
     }
-  })
+    })
     .catch(error => console.error('Error:', error));
 
 }
@@ -107,8 +95,6 @@ function textToSpeech(text) {
     
 }
 
-//-----------------------------------------------------------------------------------------
-
-fetchFirst(); 
+fetchFirst();
 setInterval(fetchData, 300);
 

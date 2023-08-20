@@ -11,23 +11,29 @@ def get_feedback(request):
     print(data)
     return JsonResponse(data)
 
+
 def video_feed(request):
-    #return StreamingHttpResponse(health_trainer.generate_frames(), content_type='application/json')
-    return StreamingHttpResponse(health_trainer.generate_frames(), content_type='multipart/x-mixed-replace; boundary=frame')
-
-# @csrf_protect
-# def submit_form_view(request):
-#     if request.method == 'POST':
-#         form = YourForm(request.POST)
-#         if form.is_valid():
-#             # 폼이 유효한 경우 처리
-#             # ...
-#     else:
-#         form = YourForm()
+    set_value = request.GET.get('set')
+    reps_value = request.GET.get('reps')
+    rest_value = request.GET.get('rest')
+    return StreamingHttpResponse(health_trainer.generate_frames(set_value, reps_value, rest_value), content_type='multipart/x-mixed-replace; boundary=frame')
 
 
+@csrf_protect
 def camera(request):
-    return render(request, "Structures/camera.html")
+    set = 2
+    reps = 4
+    rest = 10
+    # if request.method == 'POST':
+    #     set = request.POST['sets']
+    #     reps = request.POST['reps']
+    #     rest = request.POST['rest']
+    return render(request, "Structures/camera.html", {'sets_value': set, 'reps_value': reps, 'rest_value': rest})
+
+
+def time(request):
+    return render(request, "Structures/time.html")
+
 
 def time(request):
     return render(request, "Structures/time.html")

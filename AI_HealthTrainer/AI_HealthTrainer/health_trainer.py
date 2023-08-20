@@ -57,7 +57,7 @@ def pluscounter():
     lock.release()     
 
 
-def generate_frames():
+def generate_frames(set_value, reps_value, rest_value):
     
     # set, reps, rest variable
     global exerciseType, sets, sets_counter, reps, reps_counter, rest_time, is_rest, stage, feedback_text, min_arm_angle
@@ -66,10 +66,10 @@ def generate_frames():
     # exerciseType = 'jumpingjack'
     # exerciseType = 'lunge'
     
-    sets = 3
+    sets = int(set_value)
     sets_counter = 1
-    reps = 5
-    rest_time = 5
+    reps = int(reps_value)
+    rest_time = int(rest_value)
     is_rest = False    
     stage = None
     min_arm_angle = 180
