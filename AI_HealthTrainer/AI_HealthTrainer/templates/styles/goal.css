@@ -56,7 +56,8 @@ html {
     line-height: 1;
     letter-spacing: 0.105rem;
     color: #f04823;
-    font-family: 'Source Sans Pro';
+    font-family: 'Montserrat';
+    font-style: italic;
     white-space: nowrap;
     display: flex;
     align-items: baseline;
@@ -64,23 +65,25 @@ html {
   }
   
   .title-part1 {
-    font-size: 3.5rem;
-    font-weight: 800;
+    font-size: 35px;
+    font-weight: 900;
     line-height: 1.2575;
-    letter-spacing: 0.105rem;
+    letter-spacing: 1.05px;
     color: #ffffff;
-    font-family: Akira Expanded, 'Source Sans Pro';
+    font-family: 'Montserrat';
+    font-style: italic;
   }
   
   .title-part2 {
     position: relative;
     left: 2rem;
-    font-size: 3.5rem;
-    font-weight: 800;
+    font-size: 35px;
+    font-weight: 900;
     line-height: 1.2575;
-    letter-spacing: 0.105rem;
+    letter-spacing: 1.05px;
     color: #f04823;
-    font-family: Akira Expanded, 'Source Sans Pro';
+    font-family: 'Montserrat';
+    font-style: italic;
   }
   
   .date-section {
@@ -184,7 +187,7 @@ background: #434242;
     background-size: cover;
     border-radius: 15%;
     padding: 8px;
-    font-family: Akira Expanded, 'Source Sans Pro';
+    font-family: 'Montserrat';
     /* font-size: 3.5rem; */
     font-weight: 400;
   }
