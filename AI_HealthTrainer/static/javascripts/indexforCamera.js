@@ -1,4 +1,4 @@
-var totalSet, doneSet, mins, secs, storeMin, storeSec;
+var totalSet, doneSet, mins, secs, storeMin, storeSec, interval;
 var video = document.getElementById('camera-viewer');
 var prev_feedback = "";
 video.src = "/video_feed";
@@ -14,6 +14,7 @@ function countdown() {
         secs = 59;
     } else {
         clearInterval(interval);
+        console.log("end");
         return;
     }
     document.getElementById("mins").innerText = String(mins);
@@ -40,6 +41,8 @@ function fetchFirst() {
     })
     .catch(error => {
         console.error("There was a problem with the fetch operation:", error);
+        mins = 0; secs = 5;
+        storeMin = mins; storeSec = secs;
     });
 
 }
@@ -56,19 +59,27 @@ function fetchData() {
             
             if (feedback_text != prev_feedback){
                 prev_feedback = feedback_text;
+
+                if (feedback_text === "Rest") {
+                    console.log(feedback_text);
+                    interval = setInterval(countdown, 1000);
+                } else if (feedback_text === "Rest time is over, Let's workout") {
+                    console.log(feedback_text);
+                    clearInterval(interval);
+                    mins = storeMin;
+                    secs = storeSec;
+                    document.getElementById("mins").innerText = String(mins);
+                    document.getElementById("seconds").innerText = String(secs);
+
+                    var temp = document.getElementById("set-num");
+                    temp.innerText = parseInt(temp.innerText) + 1;
+                } else if (feedback_text === "All sets is done, congratulation!") {
+                    console.log(feedback_text);
+                    reqRedirect();
+                }
+
                 return textToSpeech(feedback_text);
-            }
-            
-            if (feedback_text === "Rest") {
-                countdown();
-            } else if (feedback_text === "Rest time is over, Let's workout") {
-                mins = storeMin;
-                secs = storeSec;
-                var temp = document.getElementById("set-num").innerText;
-                temp = parseInt(temp) + 1;
-            } else if (feedback_text === "All sets is done, congratulation!") {
-                reqRedirect();
-            }
+            } 
 
         })
         .catch(error => {
@@ -98,6 +109,6 @@ function textToSpeech(text) {
 
 //-----------------------------------------------------------------------------------------
 
-fetchFirst();
+fetchFirst(); 
 setInterval(fetchData, 300);
 
