@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro%3A400%2C600%2C800"/>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Akira+Expanded%3A800"/>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat%3A600"/>
-  <link rel="stylesheet" href="./styles/goal.css"/>
+  <link rel="stylesheet" href="../styles/goal.css"/>
 </head>
 <body>
 <div class="container">
@@ -23,20 +23,25 @@
     </p>
     <div class="date-section">
       <img class="date-border" src="./assets/rectangle-10.png"/>
-      <form action="" method="post"> <!--여기에 하면 되-->
+      <form action="https://naver.com" method="post"> <!--여기에 하면 되-->
+        
         <label for="start-date" class="start-label">Start Date</label>
         <input type="date" id="start-date" name="start-date" class="start-text">
 
         <label for="end-date" class="end-label">End Date</label>
         <input type="date" id="end-date" name="end-date" class="end-text">
 
-        <label for="goal" class="goal-label">Goal</label>
-        <input type="number" id="goal" name="goal" step="1">
+        <label for="hours" class="hours-label">Hours</label>
+        <input type="number" id="hours" name="hours" step="1" min="1"> 
+
+        <label for="minutes" class="minutes-label">Minutes</label>
+        <input type="number" id="minutes" name="minutes" step="1" min="0" max="59">
 
         <input type="submit" value="Submit">
       </form>
     </div>
   </div>
 </div>
+<script src="../javascripts/indexforGoal.js"></script>
 </body>
 </html>

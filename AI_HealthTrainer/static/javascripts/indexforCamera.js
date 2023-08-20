@@ -27,7 +27,7 @@ document.getElementById("min-unit").addEventListener("click", function () {
         secs = parseInt(secE.innerText);
 
         if (secs > 0) secs--;
-         else {
+        else {
             mins--;
             secs = 59;
             minE.innerText = mins;

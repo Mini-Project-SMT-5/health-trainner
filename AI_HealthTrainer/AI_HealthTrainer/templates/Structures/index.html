@@ -8,11 +8,19 @@
     <img id="video" src="" style="width:1000px; height:600px;" alt="Webcam Video">
 
     <p id="feedback"></p>
-
+    
+    <script src="../javascripts/indexforCamera.js"></script>
     <script>
+    
+        var scriptElement = document.currentScript;
+        var scriptSrc = scriptElement.src;
+        var scriptPath = scriptSrc.substring(0, scriptSrc.lastIndexOf("/"));
+    
         var video = document.getElementById('video');
         var prev_feedback = "";
         video.src = "/video_feed";
+        
+        console.log(scriptPath);
 
         function fetchData() {
             fetch("/get_feedback/")

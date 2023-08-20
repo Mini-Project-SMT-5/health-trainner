@@ -14,5 +14,8 @@ def video_feed(request):
     #return StreamingHttpResponse(health_trainer.generate_frames(), content_type='application/json')
     return StreamingHttpResponse(health_trainer.generate_frames(), content_type='multipart/x-mixed-replace; boundary=frame')
 
+def camera(request):
+    return render(request, "Structures/camera.html")
+
 def index(request):
     return render(request, 'index.html')

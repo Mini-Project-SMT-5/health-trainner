@@ -37,7 +37,7 @@ body {
 }
 
 .header-bg {
-    width: 90vw;
+    width: 80vw;
     height: 38vw;
     position: absolute;
     left: 50%;
@@ -101,28 +101,28 @@ body {
 }
 
 #mins {
-    left: 70%;
+    left: 60%;
     top: 50%;
     transform: translateY(-50%);
     color: #ffffff;
 }
 
 #seconds {
-    left: 85%;
-    top: 50%;
-    transform: translateY(-50%);
-    color: #ffffff;
-}
-
-#min-unit {
     left: 75%;
     top: 50%;
     transform: translateY(-50%);
     color: #ffffff;
 }
 
+#min-unit {
+    left: 65%;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #ffffff;
+}
+
 #second-unit {
-    left: 90%;
+    left: 80%;
     top: 50%;
     transform: translateY(-50%);
     color: #ffffff;
