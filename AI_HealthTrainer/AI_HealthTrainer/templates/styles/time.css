@@ -6,7 +6,7 @@ span.orange{
     color: #fff;
     font-size: 60px;
     font-style: normal;
-    font-family: "Akira Expanded", sans-serif;
+    font-family: 'Montserrat';
     font-weight: 400;
     line-height: normal;
     letter-spacing: 2px;
@@ -39,7 +39,7 @@ p {
     justify-content: center;
     color: white;
     font-size: 40px;
-    font-family: "Akira Expanded", sans-serif;
+    font-family: 'Montserrat';
     font-weight: 800;
     letter-spacing: 1.20px;
     padding-top: 35px;
@@ -54,7 +54,7 @@ p {
     color: black;      
     background-size: cover;
     font-size: 60px;
-    font-family: "Akira Expanded", sans-serif;
+    font-family: 'Montserrat';
     font-weight: 800;
     letter-spacing: 1.80px;
     background-size: contain;
@@ -72,7 +72,7 @@ but {
     color: black;      
     border-radius: 100%;
     font-size: 60px;
-    font-family: "Akira Expanded", sans-serif;
+    font-family: 'Montserrat';
     font-weight: 800;
     letter-spacing: 1.80px;
     background-size: contain;
