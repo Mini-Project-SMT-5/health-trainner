@@ -21,7 +21,10 @@
     <div class="container">     
       <div class="row text-white">
         <div class="boxtime col-sm-4" id="set">
-          <ul type="none">
+          <form method="post" action="{% url 'camera' %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+          <ul type="none"> 
             <li><p class="text-white "><b>SET</b></p></li>
             <li><but><ter  class="plus" type="button">+</ter></but></li>
             <li><span><ternum  class="num">00</ternum></span></li>
@@ -48,13 +51,9 @@
     </div>
 
     <div class="ikitomboloke">
-        <form method="post" action="{% url 'camera' %}">
-          {% csrf_token %}
-          {{ form.as_p }}
           <button type="submit" class="btn text-white btn-rounded btn-lg fs-3 btn-custom">Start &ensp;<i class="bi bi-send-fill"></i></button>
-        </form>
     </div>
-
+    </form>
 
     <script src="{% static 'javascripts/time.js' %}"></script>
 </body>

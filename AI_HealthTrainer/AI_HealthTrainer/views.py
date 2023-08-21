@@ -22,8 +22,8 @@ def video_feed(request):
 @csrf_protect
 def camera(request):
     set = 2
-    reps = 4
-    rest = 10
+    reps = 2
+    rest = 2
     # if request.method == 'POST':
     #     set = request.POST['sets']
     #     reps = request.POST['reps']
@@ -34,9 +34,9 @@ def camera(request):
 def time(request):
     return render(request, "Structures/time.html")
 
+def completion(request):
+    return render(request, "Structures/completion.html")
 
-def time(request):
-    return render(request, "Structures/time.html")
 
 def index(request):
     return render(request, 'index.html')
