@@ -44,10 +44,6 @@
 <script>
     function sendFinish() {
     fetch('/your-endpoint', { //여기야
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        }
     })
     .then(response => response.json()) 
     .then(data => {
