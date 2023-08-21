@@ -163,6 +163,26 @@ border-radius: 30px;
 background: #434242;
 }
 
+.hours-label {
+  color: #FFF;
+  font-family: Montserrat;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  letter-spacing: 0.6px;
+}
+
+.minutes-label {
+  color: #FFF;
+  font-family: Montserrat;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  letter-spacing: 0.6px;
+}
+
   /* padding */
   div.start, div.end, div.goal{
     padding-bottom: 20px;
