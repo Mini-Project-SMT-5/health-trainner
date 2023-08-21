@@ -22,8 +22,10 @@ function countdown() {
     document.getElementById("seconds").innerText = String(secs);
 }
 
+
 function fetchFirst() {   
     totalSet = parseInt(sets);
+    console.log(totalSet);
     doneSet = 1;
     mins = Math.floor(parseInt(rest) / 60);
     secs = parseInt(rest) % 60;
@@ -34,6 +36,7 @@ function fetchFirst() {
     document.getElementById("mins").innerText = String(mins);
     document.getElementById("seconds").innerText = String(secs);
 }
+  
 
 function fetchData() {
     fetch("/get_feedback/")
@@ -59,8 +62,8 @@ function fetchData() {
                     document.getElementById("mins").innerText = String(mins);
                     document.getElementById("seconds").innerText = String(secs);
 
-                    var temp = document.getElementById("set-num");
-                    temp.innerText = String(parseInt(temp.innerText) + 1) + "/" + doneSet;
+                    var currentSet = parseInt(document.getElementById("set-num").innerText.split("/")[0]);
+                    document.getElementById("set-num").innerText = (currentSet + 1) + "/" + totalSet;
                 } else if (feedback_text === "All sets is done, congratulation!") {
                     console.log(feedback_text);
                     reqRedirect();
@@ -96,5 +99,6 @@ function textToSpeech(text) {
 }
 
 fetchFirst();
+console.log(totalSet);
 setInterval(fetchData, 300);
 
