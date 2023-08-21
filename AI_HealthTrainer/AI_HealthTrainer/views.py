@@ -48,11 +48,11 @@ def completion(request):
     reps_value = int(request.GET.get('reps_value'))
 
     if exercise_name == "dumbbellcurl":
-        calories = 0.15 * reps_value * sets_value
+        calories = round(0.15 * reps_value * sets_value, 2)
     elif exercise_name == "lunge":
-        calories = 0.3 * reps_value * sets_value
+        calories = round(0.3 * reps_value * sets_value, 2)
     elif exercise_name == "jumpingjack":
-        calories = 0.1 * reps_value * sets_value
+        calories = round(0.1 * reps_value * sets_value, 2)
 
     time_interval = end_time - start_time
     workoutTime = int(time_interval.total_seconds())    
