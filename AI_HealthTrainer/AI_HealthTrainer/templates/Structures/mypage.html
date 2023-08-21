@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,7 +9,7 @@
   <title>My Page</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro%3A700"/>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat%3A700"/>
-  <link rel="stylesheet" href="../styles/styleforMypage.css"/>
+  <link rel="stylesheet" href="{% static 'styles/styleforMypage.css' %}"/>
 </head>
 <body>
 <div class="my-page-container">
@@ -46,5 +47,5 @@
     <p class="total-hours-text" id="total-hour-unit">mins</p>
   </div>
 </div>
-<script src="../javascripts/indexforMypage.js"></script>
+<script src="{% static 'javascripts/indexforMypage.js' %}"></script>
 </body>
