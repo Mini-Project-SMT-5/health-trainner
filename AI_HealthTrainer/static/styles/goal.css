@@ -148,14 +148,16 @@ font-weight: 600;
 line-height: normal;
 letter-spacing: 0.6px;
   }
-#hours{
+  
+.hours{
 width: 371px;
 height: 43px;
 flex-shrink: 0;
 border-radius: 30px;
 background: #434242;
 }
-#minutes {
+
+.minutes {
 width: 371px;
 height: 43px;
 flex-shrink: 0;
