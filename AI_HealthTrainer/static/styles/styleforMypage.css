@@ -13,7 +13,9 @@ input {
 	border: none;
 }
 body {
-  width: 144rem;
+  width: 100vw;  /* 화면 너비에 맞게 페이지 너비 설정 */
+  margin: 0;     /* 기본 마진 제거 */
+  overflow-x: hidden;  /* 가로 스크롤 제거 */
 }
 
 .my-page-container {
@@ -268,3 +270,4 @@ body {
 #total-hour-unit {
   left: 30rem;
 }
+
