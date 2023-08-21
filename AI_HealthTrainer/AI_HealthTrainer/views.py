@@ -61,9 +61,6 @@ def completion(request):
     
     print("start_time:", start_time.strftime('%H:%M:%S'))
     print("end_time:", end_time.strftime('%H:%M:%S'))   
-    print("calories:", calories)
-    print("Time interval:", workoutTime)
-    print("count:", count)
         
     #디비 저장
     return render(request, "Structures/completion.html", {'calories': calories, 'total_time': workoutTime, 'count': count})
