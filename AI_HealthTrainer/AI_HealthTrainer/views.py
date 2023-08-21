@@ -25,13 +25,13 @@ def video_feed(request):
 def camera(request):    
     global start_time
     
-    set = request.POST['sets']
+    sets = request.POST['sets']
     reps = request.POST['reps']
     rest = request.POST['rest']
 
     start_time = datetime.now()
 
-    return render(request, "Structures/camera.html", {'sets_value': set, 'reps_value': reps, 'rest_value': rest})
+    return render(request, "Structures/camera.html", {'sets_value': sets, 'reps_value': reps, 'rest_value': rest})
 
 
 def set_time(request):
