@@ -59,8 +59,8 @@ function fetchData() {
                     document.getElementById("mins").innerText = String(mins);
                     document.getElementById("seconds").innerText = String(secs);
 
-                    var temp = document.getElementById("set-num");
-                    temp.innerText =String(parseInt(temp.innerText) + 1) + "/" + totalSet;
+                    var currentSet = parseInt(document.getElementById("set-num").innerText.split("/")[0]);
+                    document.getElementById("set-num").innerText = (currentSet + 1) + "/" + totalSet;
                 } else if (feedback_text === "All sets is done, congratulation!") {
                     console.log(feedback_text);
                     reqRedirect();
@@ -76,7 +76,18 @@ function fetchData() {
 }
 
 function reqRedirect() {
-    fetch('/completion/')
+    const dataToSend = {
+        "sets_value": sets,
+        "reps_value": reps,
+    };
+
+    fetch('/completion/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(dataToSend)
+    })
     .then(response => {
         clearInterval(camera_interval);
         if (!response.ok) {

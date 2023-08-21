@@ -24,11 +24,14 @@ def camera(request):
     set = 2
     reps = 2
     rest = 2
-    # if request.method == 'POST':
-    #     set = request.POST['sets']
-    #     reps = request.POST['reps']
-    #     rest = request.POST['rest']
+    # set = request.POST['sets']
+    # reps = request.POST['reps']
+    # rest = request.POST['rest']
     print("run camera")
+    print("set", set)
+    print("reps", reps)
+    print("rest", rest)
+        
     return render(request, "Structures/camera.html", {'sets_value': set, 'reps_value': reps, 'rest_value': rest})
 
 
@@ -36,6 +39,11 @@ def time(request):
     return render(request, "Structures/time.html")
 
 def completion(request):
+    data = request.json()  # 전송된 JSON 데이터를 파싱
+
+    print(data)
+
+    #디비 저장
     return render(request, "Structures/completion.html")
 
 
