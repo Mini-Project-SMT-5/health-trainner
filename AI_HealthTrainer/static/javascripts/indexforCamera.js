@@ -1,4 +1,4 @@
-var totalSet, doneSet, mins, secs, storeMin, storeSec, interval;
+var totalSet, doneSet, mins, secs, storeMin, storeSec, interval, camera_interval;
 var prev_feedback = "";
 let synth = speechSynthesis;
 var video = document.getElementById('camera-viewer');
@@ -62,8 +62,13 @@ function fetchData() {
                     document.getElementById("mins").innerText = String(mins);
                     document.getElementById("seconds").innerText = String(secs);
 
+<<<<<<< HEAD
+                    var temp = document.getElementById("set-num");
+                    temp.innerText =String(parseInt(temp.innerText) + 1) + "/" + totalSet;
+=======
                     var currentSet = parseInt(document.getElementById("set-num").innerText.split("/")[0]);
                     document.getElementById("set-num").innerText = (currentSet + 1) + "/" + totalSet;
+>>>>>>> 7ceb90ab9000e37cb670af51491bcc3d3db9dcfa
                 } else if (feedback_text === "All sets is done, congratulation!") {
                     console.log(feedback_text);
                     reqRedirect();
@@ -79,15 +84,20 @@ function fetchData() {
 }
 
 function reqRedirect() {
-    fetch('') //redirection
-    .then(response => response.json())
-    .then(data => {
-    if (data.redirectUrl) {
-        window.location.href = data.redirectUrl;
-    }
+    fetch('/completion/')
+    .then(response => {
+        clearInterval(camera_interval);
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.text();
+    })
+    .then(html => {
+        document.open();
+        document.write(html);
+        document.close();
     })
     .catch(error => console.error('Error:', error));
-
 }
 
 function textToSpeech(text) {
@@ -99,6 +109,10 @@ function textToSpeech(text) {
 }
 
 fetchFirst();
+<<<<<<< HEAD
+camera_interval = setInterval(fetchData, 100);
+=======
 console.log(totalSet);
 setInterval(fetchData, 300);
+>>>>>>> 7ceb90ab9000e37cb670af51491bcc3d3db9dcfa
 

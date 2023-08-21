@@ -34,9 +34,9 @@ def camera(request):
 def time(request):
     return render(request, "Structures/time.html")
 
+def completion(request):
+    return render(request, "Structures/completion.html")
 
-def time(request):
-    return render(request, "Structures/time.html")
 
 def index(request):
     return render(request, 'index.html')
