@@ -30,5 +30,6 @@ urlpatterns = [
     # path('get_feedback/', views.get_feedback, name='get_feedback'),
     path('goal/', views.set_goal, name='goal'),
     path('mypage/', views.mypage, name='mypage'),
+    path('completion/', views.completion, name='completion'),
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

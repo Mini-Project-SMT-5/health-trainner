@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from .models import goal
 from .goal import set_goal
 from .mypage import mypage
+from .completion import completion 
 
 import cv2
 import numpy as np

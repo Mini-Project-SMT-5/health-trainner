@@ -58,7 +58,7 @@ class UserFitnessData(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     goal = models.PositiveIntegerField(blank=True, null=True)
     exercise_time = models.PositiveIntegerField(default = 0)
-    used_calories = models.FloatField(default = 0.0)
+    used_calories = models.PositiveIntegerField(default = 0)
     accomplishment_rate = models.PositiveIntegerField(null = True, blank = True)
 
    # def save(self, *args, **kwargs) :

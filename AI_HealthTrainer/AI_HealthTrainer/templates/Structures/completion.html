@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -76,15 +77,18 @@
     <div class="grid-container">
     <div class="text-container left">
         <span>Calories</span>
-        <div class="rectangle">100</div>
+        <!-- <div class="rectangle">100</div> -->
+        <div class="rectangle">{{ used_calories }}</div>
     </div>
     <div class="text-container center">
         <span>Total Time</span>
-        <div class="rectangle">2</div>
+        <!-- <div class="rectangle">2</div> -->
+        <div class="rectangle">{{ total_exercise_time }}</div>
     </div>
     <div class="text-container right">
         <span>Total Repetition</span>
-        <div class="rectangle">1000000</div>
+        <!-- <div class="rectangle">1000000</div> -->
+        <div class="rectangle">{{ total_exercise_time }}</div>
     </div>
     <style>
     .grid-container {

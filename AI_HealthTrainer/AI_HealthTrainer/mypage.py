@@ -25,7 +25,7 @@ def mypage(request):
     except UserFitnessData.DoesNotExist:
         goal = None
         exercise_time = 0
-        used_calories = 0.0
+        used_calories = 0
         user_fitness_data.accomplishment_rate = (exercise_time / goal) * 100
         user_fitness_data.save()
 
