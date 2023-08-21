@@ -76,17 +76,15 @@ function fetchData() {
 }
 
 function reqRedirect() {
-    const dataToSend = {
-        "sets_value": sets,
-        "reps_value": reps,
-    };
-
-    fetch('/completion/', {
-        method: 'POST',
+    const params = new URLSearchParams();
+    params.append('sets_value', sets);
+    params.append('reps_value', reps);
+    
+    fetch(`/completion/?${params.toString()}`, {
+        method: 'GET',
         headers: {
             'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(dataToSend)
+        }
     })
     .then(response => {
         clearInterval(camera_interval);
@@ -97,7 +95,7 @@ function reqRedirect() {
     })
     .then(html => {
         document.open();
-        document.write(html);
+        document.write(html);s
         document.close();
     })
     .catch(error => console.error('Error:', error));

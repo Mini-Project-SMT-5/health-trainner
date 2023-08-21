@@ -3,7 +3,9 @@ from django.views.decorators.csrf import csrf_protect
 from django.http import StreamingHttpResponse, JsonResponse
 
 from AI_HealthTrainer import health_trainer
+from datetime import datetime, timedelta
 
+global start_time, end_time, exercise_name
 
 def get_feedback(request):
     feedback_text = health_trainer.send_feedback()
@@ -20,31 +22,54 @@ def video_feed(request):
 
 
 @csrf_protect
-def camera(request):
-    set = 2
-    reps = 2
-    rest = 2
-    # set = request.POST['sets']
-    # reps = request.POST['reps']
-    # rest = request.POST['rest']
-    print("run camera")
-    print("set", set)
-    print("reps", reps)
-    print("rest", rest)
-        
+def camera(request):    
+    global start_time
+    
+    set = request.POST['sets']
+    reps = request.POST['reps']
+    rest = request.POST['rest']
+
+    start_time = datetime.now()
+
     return render(request, "Structures/camera.html", {'sets_value': set, 'reps_value': reps, 'rest_value': rest})
 
 
-def time(request):
+def set_time(request):
+    global exercise_name
+    exercise_name = request.GET.get('exercise_name')
     return render(request, "Structures/time.html")
 
 def completion(request):
-    data = request.json()  # 전송된 JSON 데이터를 파싱
+    global end_time, exercise_name
+    
+    end_time = datetime.now()
 
-    print(data)
+    sets_value = int(request.GET.get('sets_value'))
+    reps_value = int(request.GET.get('reps_value'))
 
+    if exercise_name == "dumbbellcurl":
+        calories = 0.15 * reps_value * sets_value
+    elif exercise_name == "lunge":
+        calories = 0.3 * reps_value * sets_value
+    elif exercise_name == "jumpingjack":
+        calories = 0.1 * reps_value * sets_value
+
+    time_interval = end_time - start_time
+    workoutTime = int(time_interval.total_seconds())    
+    count = sets_value * reps_value
+    
+    print("start_time:", start_time.strftime('%H:%M:%S'))
+    print("end_time:", end_time.strftime('%H:%M:%S'))   
+    print("calories:", calories)
+    print("Time interval:", workoutTime)
+    print("count:", count)
+        
     #디비 저장
-    return render(request, "Structures/completion.html")
+    return render(request, "Structures/completion.html", {'calories': calories, 'total_time': workoutTime, 'count': count})
+
+
+def exercise(request):
+    return render(request, "Structures/exercise.html")
 
 
 def index(request):
