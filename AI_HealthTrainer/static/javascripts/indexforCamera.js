@@ -1,4 +1,4 @@
-var totalSet, doneSet, mins, secs, storeMin, storeSec, interval, camera_interval;
+var totalSet, doneSet, mins, secs, storeMin, storeSec, interval;
 var prev_feedback = "";
 let synth = speechSynthesis;
 var video = document.getElementById('camera-viewer');
@@ -59,8 +59,8 @@ function fetchData() {
                     document.getElementById("mins").innerText = String(mins);
                     document.getElementById("seconds").innerText = String(secs);
 
-                    var temp = document.getElementById("set-num");
-                    temp.innerText =String(parseInt(temp.innerText) + 1) + "/" + totalSet;
+                    var currentSet = parseInt(document.getElementById("set-num").innerText.split("/")[0]);
+                    document.getElementById("set-num").innerText = (currentSet + 1) + "/" + totalSet;
                 } else if (feedback_text === "All sets is done, congratulation!") {
                     console.log(feedback_text);
                     reqRedirect();
@@ -76,7 +76,16 @@ function fetchData() {
 }
 
 function reqRedirect() {
-    fetch('/completion/')
+    const params = new URLSearchParams();
+    params.append('sets_value', sets);
+    params.append('reps_value', reps);
+    
+    fetch(`/completion/?${params.toString()}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
     .then(response => {
         clearInterval(camera_interval);
         if (!response.ok) {
@@ -86,11 +95,12 @@ function reqRedirect() {
     })
     .then(html => {
         document.open();
-        document.write(html);
+        document.write(html);s
         document.close();
     })
     .catch(error => console.error('Error:', error));
 }
+
 
 function textToSpeech(text) {
     console.log("call textToSpeech");
@@ -101,5 +111,5 @@ function textToSpeech(text) {
 }
 
 fetchFirst();
-camera_interval = setInterval(fetchData, 100);
+setInterval(fetchData, 300);
 

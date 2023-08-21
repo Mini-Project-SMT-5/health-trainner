@@ -21,38 +21,41 @@
     <div class="container">     
       <div class="row text-white">
         <div class="boxtime col-sm-4" id="set">
-          <form method="post" action="{% url 'camera' %}">
-            {% csrf_token %}
-            {{ form.as_p }}
           <ul type="none"> 
             <li><p class="text-white "><b>SET</b></p></li>
-            <li><but><ter  class="plus" type="button">+</ter></but></li>
+            <li><but><input type="button" value="+" name="set" class="plus"></but></li>
             <li><span><ternum  class="num">00</ternum></span></li>
-            <li style="padding-bottom: 50px;"><but><ter  class="minus" type="button">–</ter></but></li>
+            <li style="padding-bottom: 50px;"><but><input type="button" value="-" name="set" class="minus"></but></li>
           </ul>
         </div>
         <div class="boxtime col-sm-4" id="reps">
           <ul type="none">
             <li><p class="text-white "><b>REPS</b></p></li>
-              <li><but><ter class="plus2" type="button">+</ter></but></li>
+              <li><but><input type="button" value="+" name="rep" class="plus2"></but></li>
               <li><span><ternum class="num2">00</ternum></span></li>
-              <li style="padding-bottom: 50px;"><but><ter class="minus2" type="button">–</ter></but></li>
+              <li style="padding-bottom: 50px;"><but><input type="button" value="-" name="rep" class="minus2">></but></li>
           </ul>
         </div>
         <div class="boxtime col-sm-4" id="rest">
           <ul type="none">
             <li><p class="text-white "><b>REST</b></p></li>
-            <li><but><ter class="plus3" type="button">+</ter></but></li>
+            <li><but><input type="button" value="+" name="rests" class="plus3"></but></li>
             <li><span><ternum  class="num3">00</ternum></span></li>
-            <li style="padding-bottom: 50px;"><but><ter class="minus3" type="button">–</ter></but></li>
+            <li style="padding-bottom: 50px;"><but><input type="button" value="-" name="rests" class="minus3"></but></li>
           </ul>
         </div>
       </div>
     </div>
 
-    <div class="ikitomboloke">
-          <button type="submit" class="btn text-white btn-rounded btn-lg fs-3 btn-custom">Start &ensp;<i class="bi bi-send-fill"></i></button>
-    </div>
+    <form method="post" action="{% url 'camera' %}">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input type="hidden" id="hiddenSetsInput" name="sets">
+      <input type="hidden" id="hiddenRepsInput" name="reps">
+      <input type="hidden" id="hiddenRestInput" name="rest">
+      <div class="ikitomboloke">
+        <input type="submit" class="btn text-white btn-rounded btn-lg fs-3 btn-custom" value="Work Out">Start &ensp;<i class="bi bi-send-fill"></i></input>
+      </div>
     </form>
 
     <script src="{% static 'javascripts/time.js' %}"></script>

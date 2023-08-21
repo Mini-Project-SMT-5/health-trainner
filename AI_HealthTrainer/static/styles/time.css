@@ -79,7 +79,7 @@ but {
 }
 
 /* plus minus section  */
-ter{
+input{
     width: 80px;
     height: 80px;
     background-size: contain;
@@ -112,6 +112,7 @@ table.tab{
 .btn-custom {
     color: #ffffff;
     background-color: #F04823;
+    width: 10rem;
 }
 
 .btn-custom:hover {
