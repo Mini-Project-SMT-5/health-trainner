@@ -42,6 +42,7 @@ def set_time(request):
 def completion(request):
     global end_time, exercise_name
     
+    print("run completion")
     end_time = datetime.now()
 
     sets_value = int(request.GET.get('sets_value'))

@@ -111,4 +111,3 @@ function textToSpeech(text) {
 
 fetchFirst();
 camera_interval = setInterval(fetchData, 100);
-

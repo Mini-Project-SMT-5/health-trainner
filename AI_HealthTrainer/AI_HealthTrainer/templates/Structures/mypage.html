@@ -18,7 +18,7 @@
     UserName  
     <br/>
     </p>
-    <input type="button" class="start-button" value="START">
+    <input type="button" class="start-button" value="START" id="startB">
   </div>
   <div class="goal-section">
     <img class="profile-img" src="../assets/rectangle-10.png"/>
@@ -29,7 +29,7 @@
     </div>
     <div class="progress-bar">
     </div>
-    <input type="button" class="set-goal-indicator" style="width: 22rem; height: 5.4rem;">
+    <input type="button" id="setG" class="set-goal-indicator" style="width: 22rem; height: 5.4rem;">
     <p class="set-goal-text" style="font-size: 3rem; left: 45rem;">Set Goal</p>
     <p class="goal-time" id="goal-time-num">(100</p>
     <p class="goal-time"  id="goal-time-unit">mins)</p>
@@ -47,5 +47,48 @@
     <p class="total-hours-text" id="total-hour-unit">mins</p>
   </div>
 </div>
-<script src="{% static 'javascripts/indexforMypage.js' %}"></script>
+<script src="../javascripts/indexforMypage.js"></script>
+<script>
+  function sendFinishtoExercise() {
+  fetch('/exercise/')
+  .then(response => {
+      if (!response.ok) {
+          throw new Error('Network response was not ok');
+      }
+      return response.text();
+  })
+  .then(html => {
+      document.open();
+      document.write(html);
+      document.close();
+  })
+  .catch(error => console.error('Error:', error));
+}
+
+function sendFinishtoGoal() {
+  fetch('/goal/')
+  .then(response => {
+      if (!response.ok) {
+          throw new Error('Network response was not ok');
+      }
+      return response.text();
+  })
+  .then(html => {
+      document.open();
+      document.write(html);
+      document.close();
+  })
+  .catch(error => console.error('Error:', error));
+}
+
+document.getElementById("startB").addEventListener("click", function() {
+  sendFinishtoExercise();
+});
+
+document.getElementById("setG").addEventListener("click", function() {
+  alert("hello");
+  sendFinishtoGoal();
+});
+
+</script>
 </body>
