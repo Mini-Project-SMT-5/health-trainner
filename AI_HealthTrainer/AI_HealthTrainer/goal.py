@@ -18,10 +18,10 @@ def set_goal(request):
             goal_minute = int(request.POST.get('minutes', 0))
             total_goal_minutes = goal_hour * 60 + goal_minute
             
-            print("start_date:", start_date)
-            print("end_date:", end_date)
-            print("hour:", str(goal_hour))
-            print("goal_min:", str(goal_minute))
+            # print("start_date:", start_date)
+            # print("end_date:", end_date)
+            # print("hour:", str(goal_hour))
+            # print("goal_min:", str(goal_minute))
             
 
             # user = request.user

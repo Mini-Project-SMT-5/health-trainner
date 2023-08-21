@@ -8,7 +8,7 @@ import pymysql
 
     
 class goal(models.Model):
-    idgoal = models.CharField(max_length=6)
+    # idgoal = models.CharField(max_length=6)
     start = models.CharField(max_length=100)
     stop = models.CharField(max_length=100)
     hour = models.PositiveIntegerField(default=0)
@@ -20,6 +20,7 @@ class goal(models.Model):
         db_table="goal"
 
 class Exercise(models.Model):
+    # exercise_id = models.CharField(max_length=30, primary_key=True)
     name = models.CharField(max_length=30)
 
     def _str_(self):
@@ -29,11 +30,13 @@ class Exercise(models.Model):
         db_table="exercise"
 
 class Workout(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE) 
+    reps = models.PositiveIntegerField(default = 0)
     count = models.SmallIntegerField(("Count"))
     start_time = models.DateTimeField(("Start Time"), auto_now=False, auto_now_add=False)
     end_time = models.DateTimeField(("End Time"), auto_now=False, auto_now_add=False)
+    calories = models.PositiveIntegerField(default = 0)
 
     class Meta:
         db_table = "Workout"
