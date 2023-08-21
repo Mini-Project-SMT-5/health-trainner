@@ -14,7 +14,7 @@ span.text, span.orange{
   color: #fff;
   font-size: 60px;
   font-style: normal;
-  font-family: 'Montserrat';
+  font-family: "Montserrat", sans-serif;
   font-style: italic;
   font-weight: 400;
   line-height: normal;
@@ -28,7 +28,7 @@ span.orange{
 
 p.text{
 color: #9f3e3e;
-font-family: 'Montserrat';
+font-family: "Montserrat", sans-serif;
 font-style: italic;
 font-size: 40px;
 font-style: normal;
