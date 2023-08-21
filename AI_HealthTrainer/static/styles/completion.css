@@ -14,7 +14,7 @@ span.text, span.orange{
     color: #fff;
     font-size: 60px;
     font-style: normal;
-    font-family: 'Montserrat';
+    font-family: "Montserrat", sans-serif;
     font-style: italic;
     font-weight: 400;
     line-height: normal;
@@ -28,7 +28,7 @@ span.text, span.orange{
   
   p.text{
   color: #9f3e3e;
-  font-family: 'Montserrat';
+  font-family: "Montserrat", sans-serif;
   font-style: italic;
   font-size: 40px;
   font-style: normal;
@@ -55,7 +55,7 @@ span.text, span.orange{
     align-items: center;
     color: white;
     font-size: 40px;
-    font-family: 'Akira Expanded', sans-serif;
+    font-family: "Montserrat", sans-serif;
     font-weight: 800;
     letter-spacing: 1.20px;
     word-wrap: break-word;
@@ -88,7 +88,7 @@ span.text, span.orange{
 .title {
     color: #F04823;
     font-size: 40px;
-    font-family: 'Akira Expanded', sans-serif;
+    font-family: "Montserrat", sans-serif;
     font-weight: 800;
     letter-spacing: 1.80px;
     word-wrap: break-word;
@@ -105,7 +105,7 @@ span.text, span.orange{
     align-items: center;
     color: white;
     font-size: 40px;
-    font-family: 'Akira Expanded', sans-serif;
+    font-family: "Montserrat", sans-serif;
     font-weight: 800;
     letter-spacing: 1.20px;
     word-wrap: break-word;
