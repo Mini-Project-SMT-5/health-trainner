@@ -95,7 +95,7 @@ function reqRedirect() {
     })
     .then(html => {
         document.open();
-        document.write(html);s
+        document.write(html);
         document.close();
     })
     .catch(error => console.error('Error:', error));

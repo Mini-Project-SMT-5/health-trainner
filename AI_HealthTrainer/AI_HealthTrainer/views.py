@@ -3,7 +3,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.http import StreamingHttpResponse, JsonResponse
 
 from AI_HealthTrainer import health_trainer
-from datetime import datetime, timedelta
+from datetime import datetime
 
 global start_time, end_time, exercise_name
 
@@ -68,6 +68,16 @@ def completion(request):
 
 def exercise(request):
     return render(request, "Structures/exercise.html")
+
+
+def mypage(request):
+    
+    today = datetime.now()
+    print("today:", today.date())
+    
+    # db 에서 데이터 가져오는 코드
+    
+    return render(request, "Structures/mypage.html")
 
 
 def index(request):

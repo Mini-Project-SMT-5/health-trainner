@@ -29,5 +29,6 @@ urlpatterns = [
     path('get_feedback/', views.get_feedback, name='get_feedback'),
     path('completion/', views.completion, name='completion'),
     path('exercise/', views.exercise, name='exercise'),
+    path('mypage/', views.mypage, name='mypage'),
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
