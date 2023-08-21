@@ -5,7 +5,7 @@ var video = document.getElementById('camera-viewer');
 var sets = video.getAttribute('data-sets');
 var reps = video.getAttribute('data-reps');
 var rest = video.getAttribute('data-rest');
-video.src = "/video_feed?set=" + sets + "&reps=" + reps + "&rest=" + rest;
+video.src = "/video_feed?sets=" + sets + "&reps=" + reps + "&rest=" + rest;
 
 function countdown() {
     if (secs > 0) {

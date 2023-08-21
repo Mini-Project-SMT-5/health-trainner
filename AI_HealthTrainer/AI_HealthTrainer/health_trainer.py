@@ -59,6 +59,10 @@ def pluscounter():
 
 def generate_frames(set_value, reps_value, rest_value):
     
+    print("generate frames")
+    print("sets", type(set_value), set_value)
+    print("reps", type(reps_value), reps_value)
+    print("rest", type(rest_value), rest_value)
     # set, reps, rest variable
     global exerciseType, sets, sets_counter, reps, reps_counter, rest_time, is_rest, stage, feedback_text, min_arm_angle
     

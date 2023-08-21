@@ -28,6 +28,7 @@ def camera(request):
     #     set = request.POST['sets']
     #     reps = request.POST['reps']
     #     rest = request.POST['rest']
+    print("run camera")
     return render(request, "Structures/camera.html", {'sets_value': set, 'reps_value': reps, 'rest_value': rest})
 
 
