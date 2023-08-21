@@ -5,7 +5,7 @@ var video = document.getElementById('camera-viewer');
 var sets = video.getAttribute('data-sets');
 var reps = video.getAttribute('data-reps');
 var rest = video.getAttribute('data-rest');
-video.src = "/video_feed?set=" + sets + "&reps=" + reps + "&rest=" + rest;
+video.src = "/video_feed?sets=" + sets + "&reps=" + reps + "&rest=" + rest;
 
 function countdown() {
     if (secs > 0) {
@@ -22,10 +22,8 @@ function countdown() {
     document.getElementById("seconds").innerText = String(secs);
 }
 
-
 function fetchFirst() {   
     totalSet = parseInt(sets);
-    console.log(totalSet);
     doneSet = 1;
     mins = Math.floor(parseInt(rest) / 60);
     secs = parseInt(rest) % 60;
@@ -36,7 +34,6 @@ function fetchFirst() {
     document.getElementById("mins").innerText = String(mins);
     document.getElementById("seconds").innerText = String(secs);
 }
-  
 
 function fetchData() {
     fetch("/get_feedback/")
@@ -62,13 +59,8 @@ function fetchData() {
                     document.getElementById("mins").innerText = String(mins);
                     document.getElementById("seconds").innerText = String(secs);
 
-<<<<<<< HEAD
-                    var temp = document.getElementById("set-num");
-                    temp.innerText =String(parseInt(temp.innerText) + 1) + "/" + totalSet;
-=======
                     var currentSet = parseInt(document.getElementById("set-num").innerText.split("/")[0]);
                     document.getElementById("set-num").innerText = (currentSet + 1) + "/" + totalSet;
->>>>>>> 7ceb90ab9000e37cb670af51491bcc3d3db9dcfa
                 } else if (feedback_text === "All sets is done, congratulation!") {
                     console.log(feedback_text);
                     reqRedirect();
@@ -84,7 +76,18 @@ function fetchData() {
 }
 
 function reqRedirect() {
-    fetch('/completion/')
+    const dataToSend = {
+        "sets_value": sets,
+        "reps_value": reps,
+    };
+
+    fetch('/completion/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(dataToSend)
+    })
     .then(response => {
         clearInterval(camera_interval);
         if (!response.ok) {
@@ -109,10 +112,5 @@ function textToSpeech(text) {
 }
 
 fetchFirst();
-<<<<<<< HEAD
 camera_interval = setInterval(fetchData, 100);
-=======
-console.log(totalSet);
-setInterval(fetchData, 300);
->>>>>>> 7ceb90ab9000e37cb670af51491bcc3d3db9dcfa
 
