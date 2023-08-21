@@ -1,11 +1,11 @@
-var totalSet, doneSet, mins, secs, storeMin, storeSec, interval;
+var totalSet, doneSet, mins, secs, storeMin, storeSec, interval, camera_interval;
 var prev_feedback = "";
 let synth = speechSynthesis;
 var video = document.getElementById('camera-viewer');
 var sets = video.getAttribute('data-sets');
 var reps = video.getAttribute('data-reps');
 var rest = video.getAttribute('data-rest');
-video.src = "/video_feed?set=" + sets + "&reps=" + reps + "&rest=" + rest;
+video.src = "/video_feed?sets=" + sets + "&reps=" + reps + "&rest=" + rest;
 
 function countdown() {
     if (secs > 0) {
@@ -59,8 +59,8 @@ function fetchData() {
                     document.getElementById("mins").innerText = String(mins);
                     document.getElementById("seconds").innerText = String(secs);
 
-                    var temp = document.getElementById("set-num");
-                    temp.innerText = parseInt(temp.innerText) + 1;
+                    var currentSet = parseInt(document.getElementById("set-num").innerText.split("/")[0]);
+                    document.getElementById("set-num").innerText = (currentSet + 1) + "/" + totalSet;
                 } else if (feedback_text === "All sets is done, congratulation!") {
                     console.log(feedback_text);
                     reqRedirect();
@@ -76,15 +76,31 @@ function fetchData() {
 }
 
 function reqRedirect() {
-    fetch('') //redirection
-    .then(response => response.json())
-    .then(data => {
-    if (data.redirectUrl) {
-        window.location.href = data.redirectUrl;
-    }
+    const dataToSend = {
+        "sets_value": sets,
+        "reps_value": reps,
+    };
+
+    fetch('/completion/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(dataToSend)
+    })
+    .then(response => {
+        clearInterval(camera_interval);
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.text();
+    })
+    .then(html => {
+        document.open();
+        document.write(html);
+        document.close();
     })
     .catch(error => console.error('Error:', error));
-
 }
 
 function textToSpeech(text) {
@@ -96,5 +112,5 @@ function textToSpeech(text) {
 }
 
 fetchFirst();
-setInterval(fetchData, 300);
+camera_interval = setInterval(fetchData, 100);
 
