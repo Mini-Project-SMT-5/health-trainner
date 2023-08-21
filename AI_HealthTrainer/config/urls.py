@@ -23,10 +23,11 @@ from AI_HealthTrainer import views
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('', views.index, name='index'),
-    path('time/', views.time, name='time'),
+    path('time/', views.set_time, name='set_time'),
     path('camera/', views.camera, name='camera'),
     path('video_feed/', views.video_feed, name='video_feed'),
     path('get_feedback/', views.get_feedback, name='get_feedback'),
     path('completion/', views.completion, name='completion'),
+    path('exercise/', views.exercise, name='exercise'),
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

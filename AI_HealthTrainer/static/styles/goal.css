@@ -32,6 +32,7 @@ html {
     width: 76.4rem;
     height: 102.4rem;
     flex-shrink: 0;
+    
   }
   
   .left-background {
@@ -40,6 +41,7 @@ html {
     overflow: hidden;
     position: relative;
     background-color: #e6e5e5;
+    background: url(../../static/assets/goal.png);
     border-radius: 0 3rem 3rem 0;
   }
   
@@ -57,7 +59,7 @@ html {
     line-height: 1;
     letter-spacing: 0.105rem;
     color: #f04823;
-    font-family: 'Montserrat';
+    font-family: "Montserrat", sans-serif;
     font-style: italic;
     white-space: nowrap;
     display: flex;
@@ -71,7 +73,7 @@ html {
     line-height: 1.2575;
     letter-spacing: 1.05px;
     color: #ffffff;
-    font-family: 'Montserrat';
+    font-family: "Montserrat", sans-serif;
     font-style: italic;
   }
   
@@ -83,7 +85,7 @@ html {
     line-height: 1.2575;
     letter-spacing: 1.05px;
     color: #f04823;
-    font-family: 'Montserrat';
+    font-family: "Montserrat", sans-serif;
     font-style: italic;
   }
   
@@ -108,7 +110,7 @@ html {
   
   .start-label {
 color: #FFF;
-font-family: Montserrat;
+font-family: "Montserrat", sans-serif;
 font-size: 20px;
 font-style: normal;
 font-weight: 600;
@@ -125,7 +127,7 @@ letter-spacing: 0.6px;
   
   .end-label {
     color: #FFF;
-    font-family: Montserrat;
+    font-family: "Montserrat", sans-serif;
     font-size: 20px;
     font-style: normal;
     font-weight: 600;
@@ -141,7 +143,7 @@ background: #434242;
   }
 .Goal-label{
 color: #ffffff;
-font-family: Montserrat;
+font-family: "Montserrat", sans-serif;
 font-size: 20px;
 font-style: normal;
 font-weight: 600;
@@ -163,6 +165,26 @@ border-radius: 30px;
 background: #434242;
 }
 
+.hours-label {
+  color: #FFF;
+  font-family: "Montserrat", sans-serif;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  letter-spacing: 0.6px;
+}
+
+.minutes-label {
+  color: #FFF;
+  font-family: "Montserrat", sans-serif;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  letter-spacing: 0.6px;
+}
+
   /* padding */
   div.start, div.end, div.goal{
     padding-bottom: 20px;
@@ -176,7 +198,7 @@ background: #434242;
     background-size: cover;
     border-radius: 15%;
     padding: 8px;
-    font-family: 'Montserrat';
+    font-family: "Montserrat", sans-serif;
     /* font-size: 3.5rem; */
     font-weight: 400;
   }

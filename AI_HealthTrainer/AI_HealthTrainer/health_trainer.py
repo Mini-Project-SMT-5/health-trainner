@@ -5,6 +5,7 @@ import time, json, cv2, threading, io, numpy as np, mediapipe as mp
 from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
 from asgiref.sync import async_to_sync
+import time
 
 mp_drawing = mp.solutions.drawing_utils # pose를 시각화해줌 (drawing utilities를 제공)
 mp_pose = mp.solutions.pose # mediapipe에서 여러가지 모델들 중 pose model을 가져옴
@@ -59,10 +60,6 @@ def pluscounter():
 
 def generate_frames(set_value, reps_value, rest_value):
     
-    print("generate frames")
-    print("sets", type(set_value), set_value)
-    print("reps", type(reps_value), reps_value)
-    print("rest", type(rest_value), rest_value)
     # set, reps, rest variable
     global exerciseType, sets, sets_counter, reps, reps_counter, rest_time, is_rest, stage, feedback_text, min_arm_angle
     
@@ -81,7 +78,6 @@ def generate_frames(set_value, reps_value, rest_value):
 
     # Video Feed
     cap = cv2.VideoCapture(0) # setup video capture camera
-
 
     ## Setup mediapipe instance
     with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as pose: # 값을 높일수록 더 자세히 탐지하지만 너무 정확하게 해서 아예 탐지 안될수도(trade off)
@@ -240,7 +236,7 @@ def generate_frames(set_value, reps_value, rest_value):
                     ret, buffer = cv2.imencode('.jpg', image)
                     render_image = buffer.tobytes()
                     feedback_text = "All sets is done, congratulation!"
-                    
+                                        
                     yield (b'--frame\r\n'
                         b'Content-Type: image/jpeg\r\n\r\n' + render_image+ b'\r\n')
                     break     
