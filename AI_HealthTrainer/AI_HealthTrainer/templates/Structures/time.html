@@ -21,6 +21,12 @@
     <div class="container">     
       <div class="row text-white">
         <div class="boxtime col-sm-4" id="set">
+<<<<<<< HEAD
+          <form method="post" action="{% url 'camera' %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+=======
+>>>>>>> 7ceb90ab9000e37cb670af51491bcc3d3db9dcfa
           <ul type="none"> 
             <li><p class="text-white "><b>SET</b></p></li>
             <li><but><input type="button" value="+" name="sets" class="plus"></but></li>
@@ -47,6 +53,11 @@
       </div>
     </div>
 
+<<<<<<< HEAD
+    <div class="ikitomboloke">
+          <button type="submit" class="btn text-white btn-rounded btn-lg fs-3 btn-custom">Start &ensp;<i class="bi bi-send-fill"></i></button>
+    </div>
+=======
     <form method="post" action="{% url 'camera' %}">
       {% csrf_token %}
       {{ form.as_p }}
@@ -56,6 +67,7 @@
       <div class="ikitomboloke">
         <button type="submit" class="btn text-white btn-rounded btn-lg fs-3 btn-custom">Start &ensp;<i class="bi bi-send-fill"></i></button>
       </div>
+>>>>>>> 7ceb90ab9000e37cb670af51491bcc3d3db9dcfa
     </form>
 
     <script src="{% static 'javascripts/time.js' %}"></script>
