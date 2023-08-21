@@ -21,17 +21,14 @@ def video_feed(request):
 
 @csrf_protect
 def camera(request):
-    # set = 3
-    # reps = 4
-    # rest = 10
-    if request.method == 'POST':
-        sets = request.POST['sets']
-        reps = request.POST['reps']
-        rest = request.POST['rest']
-        print("sets" + sets)
-        print("reps" + reps)
-        print("rest" + rest)
-    return render(request, "Structures/camera.html", {'sets_value': sets, 'reps_value': reps, 'rest_value': rest})
+    set = 2
+    reps = 2
+    rest = 2
+    # if request.method == 'POST':
+    #     set = request.POST['sets']
+    #     reps = request.POST['reps']
+    #     rest = request.POST['rest']
+    return render(request, "Structures/camera.html", {'sets_value': set, 'reps_value': reps, 'rest_value': rest})
 
 
 def time(request):
