@@ -13,7 +13,7 @@ def get_feedback(request):
 
 
 def video_feed(request):
-    set_value = request.GET.get('set')
+    set_value = request.GET.get('sets')
     reps_value = request.GET.get('reps')
     rest_value = request.GET.get('rest')
     return StreamingHttpResponse(health_trainer.generate_frames(set_value, reps_value, rest_value), content_type='multipart/x-mixed-replace; boundary=frame')
@@ -25,10 +25,13 @@ def camera(request):
     # reps = 4
     # rest = 10
     if request.method == 'POST':
-        set = request.POST['sets']
+        sets = request.POST['sets']
         reps = request.POST['reps']
         rest = request.POST['rest']
-    return render(request, "Structures/camera.html", {'sets_value': set, 'reps_value': reps, 'rest_value': rest})
+        print("sets" + sets)
+        print("reps" + reps)
+        print("rest" + rest)
+    return render(request, "Structures/camera.html", {'sets_value': sets, 'reps_value': reps, 'rest_value': rest})
 
 
 def time(request):

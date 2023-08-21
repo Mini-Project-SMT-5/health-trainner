@@ -50,9 +50,9 @@
     <form method="post" action="{% url 'camera' %}">
       {% csrf_token %}
       {{ form.as_p }}
-      <input type="hidden" id="hiddenSetsInput" name="sets">
-      <input type="hidden" id="hiddenRepsInput" name="reps">
-      <input type="hidden" id="hiddenRestInput" name="rest">
+      <input type="hidden" id="sets" name="sets">
+      <input type="hidden" id="reps" name="reps">
+      <input type="hidden" id="rest" name="rest">
       <div class="ikitomboloke">
         <button type="submit" class="btn text-white btn-rounded btn-lg fs-3 btn-custom">Start &ensp;<i class="bi bi-send-fill"></i></button>
       </div>
