@@ -1,4 +1,4 @@
-var totalSet, doneSet, mins, secs, storeMin, storeSec, interval;
+var totalSet, doneSet, mins, secs, storeMin, storeSec, interval, camera_interval;
 var prev_feedback = "";
 let synth = speechSynthesis;
 var video = document.getElementById('camera-viewer');
@@ -101,7 +101,6 @@ function reqRedirect() {
     .catch(error => console.error('Error:', error));
 }
 
-
 function textToSpeech(text) {
     console.log("call textToSpeech");
     let utterance = new SpeechSynthesisUtterance(text);
@@ -111,5 +110,4 @@ function textToSpeech(text) {
 }
 
 fetchFirst();
-setInterval(fetchData, 300);
-
+camera_interval = setInterval(fetchData, 100);
