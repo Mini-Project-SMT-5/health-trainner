@@ -37,36 +37,28 @@ span.text, span.orange{
   letter-spacing: 1.2px;
   }
 
-
-  span.textin{
-    justify-content: center;
-    align-items: center;
-  }
-
 .rectangle {
-    /* background-color: white;
+    background-color: white;
     padding: 10px 20px; /* Sesuaikan ukuran padding sesuai kebutuhan Anda */
-    /* border-radius: 15px; Nilai border-radius menentukan bentuk ujung */ 
+    border-radius: 15px; /* Nilai border-radius menentukan bentuk ujung */
     margin-top: 10px; /* Ruang antara kotak dan teks di atasnya */
     color: black;
     display: inline-block; /* Agar kotak mengikuti lebar teks di dalamnya */
-    /* width: 50%; 
-    height: 200%;  */
-    /* background: #D9D9D9; 
-    border-radius: 40px; */
+    width: 50%; 
+    height: 200%; 
+    background: #D9D9D9; 
+    border-radius: 70px;
 
-    width: 150px;
-    height: 150px;
+    width: 280px;
+    height: 280px;
     background-size: contain;
     background-color: #D9D9D9;
-    border-radius: 40px;
     justify-content: center;
     align-items: center;
     display: flex;
     cursor: none;
+    display: flex;
 }
-
-
 .text-container {
     display: flex;
     flex-direction: column;
