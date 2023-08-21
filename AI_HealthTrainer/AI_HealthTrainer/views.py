@@ -1,9 +1,15 @@
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_protect
 from django.http import StreamingHttpResponse, JsonResponse
+from datetime import datetime
 
 from AI_HealthTrainer import health_trainer
 from datetime import datetime
+
+from .goal import set_goal
+from .mypage import mypage
+from .completion import completion
+from .models import Workout, UserFitnessData, Exercise
 
 global start_time, end_time, exercise_name
 
@@ -78,7 +84,6 @@ def mypage(request):
     # db 에서 데이터 가져오는 코드
     
     return render(request, "Structures/mypage.html")
-
 
 def index(request):
     return render(request, 'index.html')
