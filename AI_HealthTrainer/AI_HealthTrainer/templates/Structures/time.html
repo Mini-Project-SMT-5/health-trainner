@@ -21,14 +21,11 @@
     <div class="container">     
       <div class="row text-white">
         <div class="boxtime col-sm-4" id="set">
-          <form method="post" action="{% url 'camera' %}">
-            {% csrf_token %}
-            {{ form.as_p }}
           <ul type="none"> 
             <li><p class="text-white "><b>SET</b></p></li>
             <li><but><input type="button" value="+" name="sets" class="plus"></but></li>
             <li><span><ternum  class="num">00</ternum></span></li>
-            <li style="padding-bottom: 50px;"><but><input type="button" value="-" name="rest" class="minus"></but></li>
+            <li style="padding-bottom: 50px;"><but><input type="button" value="-" name="sets" class="minus"></but></li>
           </ul>
         </div>
         <div class="boxtime col-sm-4" id="reps">
@@ -36,7 +33,7 @@
             <li><p class="text-white "><b>REPS</b></p></li>
               <li><but><input type="button" value="+" name="reps" class="plus2"></but></li>
               <li><span><ternum class="num2">00</ternum></span></li>
-              <li style="padding-bottom: 50px;"><but><input type="button" value="-" name="rest" class="minus2">></but></li>
+              <li style="padding-bottom: 50px;"><but><input type="button" value="-" name="reps" class="minus2">></but></li>
           </ul>
         </div>
         <div class="boxtime col-sm-4" id="rest">
@@ -50,9 +47,15 @@
       </div>
     </div>
 
-    <div class="ikitomboloke">
-          <button type="submit" class="btn text-white btn-rounded btn-lg fs-3 btn-custom">Start &ensp;<i class="bi bi-send-fill"></i></button>
-    </div>
+    <form method="post" action="{% url 'camera' %}">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input type="hidden" id="hiddenSetsInput" name="sets">
+      <input type="hidden" id="hiddenRepsInput" name="reps">
+      <input type="hidden" id="hiddenRestInput" name="rest">
+      <div class="ikitomboloke">
+        <button type="submit" class="btn text-white btn-rounded btn-lg fs-3 btn-custom">Start &ensp;<i class="bi bi-send-fill"></i></button>
+      </div>
     </form>
 
     <script src="{% static 'javascripts/time.js' %}"></script>

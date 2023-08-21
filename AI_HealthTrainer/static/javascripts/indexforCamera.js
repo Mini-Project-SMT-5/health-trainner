@@ -60,7 +60,7 @@ function fetchData() {
                     document.getElementById("seconds").innerText = String(secs);
 
                     var temp = document.getElementById("set-num");
-                    temp.innerText = parseInt(temp.innerText) + 1;
+                    temp.innerText = String(parseInt(temp.innerText) + 1) + "/" + doneSet;
                 } else if (feedback_text === "All sets is done, congratulation!") {
                     console.log(feedback_text);
                     reqRedirect();
