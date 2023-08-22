@@ -24,7 +24,7 @@ def rest():
     lock.acquire()
     reps_counter = 0
     sets_counter += 1
-    stage = None
+    stage = "down"
     is_rest = False
     feedback_text = "Rest time is over, Let's workout"
     lock.release()
@@ -61,7 +61,7 @@ def pluscounter():
 def generate_frames(set_value, reps_value, rest_value, exercise_name):
     
     # set, reps, rest variable
-    global exerciseType, sets, sets_counter, reps, reps_counter, rest_time, is_rest, stage, feedback_text, min_arm_angle
+    global sets, sets_counter, reps, reps_counter, rest_time, is_rest, stage, feedback_text, min_arm_angle
     
     feedback_text = ""
     sets = int(set_value)
@@ -134,18 +134,17 @@ def generate_frames(set_value, reps_value, rest_value, exercise_name):
                             if right_arm_angle > 150:
                                 bend = False
                                 if stage == "down":
-                                    feedback_text = "bend your arms more"
+                                    feedback_text = "Bend your arms more"
                                     
                                 elif stage == "up":
                                     stage = "down"
                                     pluscounter()
-                                                
                                     feedback_text = str(reps_counter)
                                     min_arm_angle = 180
                                     
                         if min_arm_angle < 90:
                             bend = True
-                            if min_arm_angle < 60:
+                            if min_arm_angle < 45:
                                 stage = "up"
                         
                             
@@ -173,11 +172,21 @@ def generate_frames(set_value, reps_value, rest_value, exercise_name):
                                     cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA
                                             )
                         
-                        if right_hip_angle > 30 and left_hip_angle > 30 and right_shoulder_angle > 130 and left_shoulder_angle > 130:
-                            stage = 'down'
-                        if right_hip_angle < 8 and left_hip_angle < 8 and right_shoulder_angle < 15 and left_shoulder_angle < 15 and stage == 'down':
-                            stage = 'up'
-                            pluscounter()
+                        if right_hip_angle < 8 and left_hip_angle < 8 and right_shoulder_angle < 15 and left_shoulder_angle < 15 and bend:
+                            bend = False
+                            if stage == 'up':
+                                stage = 'down'
+                                pluscounter()
+                                feedback_text = str(reps_counter)
+                                min_arm_angle = 180
+                            elif stage == 'down':
+                                feedback_text = "Extend your arms and legs more"
+                        
+                        if right_shoulder_angle > 80 or left_shoulder_angle > 80 or right_hip_angle > 15 or left_hip_angle > 15:
+                            bend = True
+                            if right_hip_angle > 30 and left_hip_angle > 30 and right_shoulder_angle > 130 and left_shoulder_angle > 130:
+                                stage = 'up'
+                        
                             
                     elif exercise_name == 'Lunge':
                         right_leg_angle = calculate_angle(rightHip, rightKnee, rightHeel)
@@ -191,12 +200,21 @@ def generate_frames(set_value, reps_value, rest_value, exercise_name):
                                     tuple(np.multiply(leftKnee, [640, 480]).astype(int)), 
                                     cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2, cv2.LINE_AA
                                             )      
-                            
-                        if left_leg_angle < 100 and right_leg_angle < 100:
-                            stage = 'down'
-                        if left_leg_angle > 160 and right_leg_angle > 160 and stage == 'down':
-                            stage = 'up'
-                            pluscounter()
+                        
+                        if left_leg_angle > 160 and right_leg_angle > 160 and bend:
+                            bend = False
+                            if stage == 'up':
+                                stage = 'down'
+                                pluscounter()
+                                feedback_text = str(reps_counter)
+                            elif stage == 'down':
+                                feedback_text = "Sit more with your legs at 90 degrees"
+                        
+                        if left_leg_angle < 120 or right_leg_angle < 120:
+                            bend = True
+                            if left_leg_angle < 90 and right_leg_angle < 90:
+                                stage = 'up'
+                        
                             
                     else:
                         print('exercise type error')
