@@ -5,11 +5,8 @@ from datetime import datetime
 
 from AI_HealthTrainer import health_trainer
 from datetime import datetime
-
-from .goal import set_goal
-from .mypage import mypage
-from .completion import completion
-from .models import Workout, UserFitnessData, Exercise
+from .models import Workout, Goal, Exercise, User
+from django.db.models import Sum
 
 global start_time, end_time, exercise_name
 
@@ -47,28 +44,41 @@ def set_time(request):
 
 def completion(request):
     global end_time, exercise_name
+    calories = 0
     
-    print("run completion")
     end_time = datetime.now()
 
     sets_value = int(request.GET.get('sets_value'))
     reps_value = int(request.GET.get('reps_value'))
 
-    if exercise_name == "dumbbellcurl":
-        calories = round(0.15 * reps_value * sets_value, 2)
-    elif exercise_name == "lunge":
-        calories = round(0.3 * reps_value * sets_value, 2)
-    elif exercise_name == "jumpingjack":
-        calories = round(0.1 * reps_value * sets_value, 2)
+    if exercise_name == "Dumbbell Curl":
+        calories = 1 * reps_value * sets_value
+    elif exercise_name == "Lunge":
+        calories = 3 * reps_value * sets_value
+    elif exercise_name == "Jumping Jack":
+        calories = 5 * reps_value * sets_value
 
     time_interval = end_time - start_time
-    workoutTime = int(time_interval.total_seconds())    
+    workoutTime = round(int(time_interval.total_seconds()) / 60, 2)
     count = sets_value * reps_value
-    
-    print("start_time:", start_time.strftime('%H:%M:%S'))
-    print("end_time:", end_time.strftime('%H:%M:%S'))   
         
-    #디비 저장
+    user = User.objects.first()
+    exercise = Exercise.objects.get(name=exercise_name)
+    
+    workout_data = {
+        'count': sets_value,
+        'start_time': start_time,
+        'end_time': end_time,
+        'reps': reps_value,
+        'user': user,
+        'Exercise_idExercise': exercise,
+        'calories': calories,
+        'workout_time': workoutTime 
+    }
+
+    workout = Workout(**workout_data)
+    workout.save()
+    
     return render(request, "Structures/completion.html", {'calories': calories, 'total_time': workoutTime, 'count': count})
 
 
@@ -81,9 +91,21 @@ def mypage(request):
     today = datetime.now()
     print("today:", today.date())
     
-    # db 에서 데이터 가져오는 코드
+    start_of_day = datetime.combine(today, datetime.min.time())
+    end_of_day = datetime.combine(today, datetime.max.time())
     
-    return render(request, "Structures/mypage.html")
+    # db 에서 데이터 가져오는 코드
+    user = User.objects.get(name="edy")
+    user_goal = Goal.objects.get(user = user)    
+    
+    total_calories = Workout.objects.filter(user=user, start_time__range=(start_of_day, end_of_day)).aggregate(Sum('calories'))
+    workout_time = Workout.objects.filter(user=user, start_time__range=(start_of_day, end_of_day)).aggregate(Sum('workout_time'))
+    workout = round(int(workout_time['workout_time__sum']))
+    goal_min = user_goal.goal
+    user_name = user.name
+    accomplishment = round(round(int(workout_time['workout_time__sum'])) / goal_min * 100)
+
+    return render(request, "Structures/mypage.html", {'calories': total_calories['calories__sum'], 'workout': workout, 'goal': goal_min, 'name': user_name, "accomplishment": accomplishment})
 
 def index(request):
     return render(request, 'index.html')

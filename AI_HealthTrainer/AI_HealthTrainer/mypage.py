@@ -4,12 +4,21 @@ from django.contrib.auth.models import User
 from .models import UserFitnessData
 from django.contrib.auth.decorators import login_required
 
-#@login_required
 def mypage(request):
-    user = request.user
-
+    # user = request.user
+    print("run mypage")
+    user = User.objects.get(username="Edy")
+    
     try:
-        user_fitness_data = UserFitnessData.objects.get(user=user) #현재 로그인한 사용자 정보 가져옴
+        
+        if user.email:
+            user_email = user.email
+            print(f"User's email: {user_email}")
+        else:
+            print("User has no email specified.")
+
+        user_fitness_data = UserFitnessData.objects.get(user=user) 
+        print(user_fitness_data)
         goal = user_fitness_data.goal
         exercise_time = 100 #user_fitness_data.exercise_time
         used_calories = 10 #user_fitness_data.used_calories
