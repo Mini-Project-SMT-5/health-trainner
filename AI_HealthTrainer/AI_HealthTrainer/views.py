@@ -7,6 +7,12 @@ from AI_HealthTrainer import health_trainer
 from datetime import datetime
 from .models import Workout, Goal, Exercise, User
 from django.db.models import Sum
+from django.contrib.auth.forms import UserCreationForm
+from django.shortcuts import render, redirect
+from .forms import SignUpForm
+from django.contrib.auth import authenticate, login
+from AI_HealthTrainer.models import Goal, Exercise
+
 
 global start_time, end_time, exercise_name
 
@@ -82,6 +88,65 @@ def completion(request):
     return render(request, "Structures/completion.html", {'calories': calories, 'total_time': workoutTime, 'count': count})
 
 
+def homepage(request):
+    return render(request, "Structures/homepage.html")
+
+
+def user_login(request):
+    if request.method == 'POST':
+        username = request.POST['username']  # Menggunakan username field sebagai email
+        password = request.POST['password']
+        print(username)
+        
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            login(request, user)
+            # print("login Berhasil")
+            return redirect('home')  # Ganti 'home' dengan nama URL yang sesuai
+        else:
+            error_message = "Invalid email or password."
+            return render(request, 'Structures/login.html', {'error_message': error_message})
+
+    return render(request, 'Structures/login.html')
+
+
+def signup(request):
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            print(form)
+            user = form.save()
+            login(request, user)
+            return redirect('login')
+        else:
+            print("Form is not valid", form.errors)
+    else:
+        form = SignUpForm()
+
+    return render(request, 'Structures/signup.html', {'form': form})
+
+
+# def home(request):
+#     user = request.user
+#     goals = Goal.objects.all()
+#     return render(request, "Structures/mypage.html", {'user': user,'goals':goals})
+
+
+def user_goal(request):
+    if request.method == 'POST':
+        user = request.user.id
+        start_date = request.POST['start-date']  # Menggunakan username field sebagai email
+        end_date = request.POST['end-date']
+        minutes = int(request.POST['minutes'])
+        hours = int(request.POST['hours'])  # Mengambil input dari POST dan mengonversi menjadi integer
+        
+        count_duration = hours * 60 + minutes
+        goal = Goal(start=start_date, end=end_date, goal= count_duration, user_id = user)
+        goal.save()
+        return redirect('mypage')
+    return render(request, "Structures/goal.html")
+
 def exercise(request):
     return render(request, "Structures/exercise.html")
 
@@ -107,5 +172,8 @@ def mypage(request):
 
     return render(request, "Structures/mypage.html", {'calories': total_calories['calories__sum'], 'workout': workout, 'goal': goal_min, 'name': user_name, "accomplishment": accomplishment})
 
-def index(request):
-    return render(request, 'index.html')
+
+# def user_dashboard(request):
+#     user = request.user
+#     goals = Goal.objects.all()
+#     return render(request, "Structures/dashboard.html", {'user': user, 'goals':goals})

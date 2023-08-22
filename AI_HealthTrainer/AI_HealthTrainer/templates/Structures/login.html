@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -6,7 +7,8 @@
     <title>LogIn | AI Health Trainer</title>
 
     <!-- STYLE -->
-    <link rel="stylesheet" href="../../../static/styles/login.css" />
+    <!-- <link rel="stylesheet" href="../../../static/styles/login.css" /> -->
+    <link rel="stylesheet" href="{% static 'styles/login.css' %}" />
 
     <!-- ICON -->
     <link
@@ -32,29 +34,79 @@
           Account
         </h2>
         <hr />
+
         <div class="box-input">
-          <div class="input-email">
-            <label for="email">Email Address</label>
-            <input type="email" name="email" id="email" />
-          </div>
-          <div class="input-password">
-            <label for="password">Password</label>
-            <input type="password" name="password" id="password" />
-            <span id="iconClick"><i id="icon" class="material-icons">visibility_off</i></span>
-          </div>
-          <button class="btnLogin" type="submit">Login</button>
-          <p>Don't Have an Account ? <span><a href="signup.html">Sign Up</a></span> </p>
-          
+          <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            <div class="input-email">
+              <label for="email">Username</label>
+              <input type="text" name="username" />
+            </div>
+            <div class="input-password">
+              <label for="password">Password</label>
+              <input type="password" name="password" id="password" />
+              <span id="iconClick"
+                ><i id="icon" class="material-icons">visibility_off</i></span
+              >
+            </div>
+            <button class="btnLogin" type="submit">Login</button>
+            <p>
+              Don't Have an Account ?
+              <span><a href="{% url 'signup' %}">Sign Up</a></span>
+            </p>
+          </form>
         </div>
       </div>
     </div>
     <div class="image-container">
-        <img src="../../../static/assets/logoteam.png" alt="logo">
-        <!-- <div class="img">
+      <img src="../../../static/assets/logoteam.png" alt="logo" />
+      <!-- <div class="img">
             <img src="../../../static/assets/logoteam.png" alt="logo">
         </div> -->
     </div>
-    
-    <script src="./js/login.js"></script>
+
+    <!-- <script src="./js/login.js"></script> -->
+    <script src="{% static 'javascripts/login.js' %}"></script>
   </body>
 </html>
+
+<style>
+  {% comment %} h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 20px;
+  } {% endcomment %}
+
+  .input-email,
+  .input-password {
+    margin-bottom: 15px;
+  }
+
+  label {
+    font-size: 1rem;
+    color: #ffff;
+    font-weight: 600;
+  }
+
+  input {
+    border: none;
+    border-bottom: 1px solid #ffff;
+    outline: none;
+    background-color: transparent;
+    padding: 10px;
+    font-size: 1rem;
+    color: #ffff;
+  }
+
+  p {
+    color: white;
+    margin-top: 20px;
+  }
+
+  a {
+    color: #f04823;
+    text-decoration: none;
+    font-weight: 600;
+  }
+</style>

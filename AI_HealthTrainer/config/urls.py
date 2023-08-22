@@ -22,14 +22,25 @@ from AI_HealthTrainer import views
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('', views.index, name='index'),
     path('time/', views.set_time, name='set_time'),
     path('camera/', views.camera, name='camera'),
     path('video_feed/', views.video_feed, name='video_feed'),
     path('get_feedback/', views.get_feedback, name='get_feedback'),
-    #path('goal/', views.set_goal, name='goal'),
     path('mypage/', views.mypage, name='mypage'),
     path('completion/', views.completion, name='completion'),
     path('exercise/', views.exercise, name='exercise'),
+    
+    
+    path('', views.homepage, name='homepage'),
+    path('login/', views.user_login, name='login'),
+    path('signup/', views.signup, name='signup'),
+    path('goal/', views.user_goal, name='goal'),
+    
+    # path('home/', views.home, name='home'),
+    # path('dashboard/', views.user_dashboard, name='dashboard'),
+    # path('home/exercise/', views.exercise, name='exercise'), 
+    # path('home/exercise/time/', views.set_time, name='set_time'),
+    # path('home/exercises/', views.admin_exercise, name='adminexercise'),
+    # path('exercise/', views.exercise, name='exercise'),
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
