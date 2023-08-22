@@ -39,6 +39,7 @@ def camera(request):
     rest = request.POST['rest']
 
     start_time = datetime.now()
+    print("exercise:", exercise_name)
 
     return render(request, "Structures/camera.html", {'sets_value': sets, 'reps_value': reps, 'rest_value': rest, 'exercise_name': exercise_name})
 

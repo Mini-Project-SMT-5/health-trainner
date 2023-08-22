@@ -153,16 +153,16 @@ body {
     position: absolute;
     width: 100%; /* add this */
     left: 0; /* adjust this */
-    top: 40rem;
+    top: 47rem;
     text-align: center;
 }
 #exerciseType {
-    font-size: 3rem;
+    font-size: 2.5rem;
     color: #ffffff;
     position: absolute;
     width: 100%; /* add this */
     left: 0; /* adjust this */
-    top: 5rem;
+    top: 2rem;
     text-align: center;
 }
 /* Media queries for larger screens */
