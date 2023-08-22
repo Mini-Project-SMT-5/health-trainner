@@ -58,18 +58,16 @@ def pluscounter():
     lock.release()     
 
 
-def generate_frames(set_value, reps_value, rest_value):
+def generate_frames(set_value, reps_value, rest_value, exercise_name):
     
     # set, reps, rest variable
     global exerciseType, sets, sets_counter, reps, reps_counter, rest_time, is_rest, stage, feedback_text, min_arm_angle
     
-    exerciseType = 'dumbbellcurl'
-    # exerciseType = 'jumpingjack'
-    # exerciseType = 'lunge'
-    
+    feedback_text = ""
     sets = int(set_value)
     sets_counter = 1
     reps = int(reps_value)
+    reps_counter = 0
     rest_time = int(rest_value)
     is_rest = False    
     stage = None
@@ -84,7 +82,6 @@ def generate_frames(set_value, reps_value, rest_value):
         while cap.isOpened():
             
             ret, frame = cap.read() #frame: webcam의 image가 담김
-            arm_status = None
             
             # Recolor image to RGB (opencv는 BGR을 mediapipe는 RGB를 사용해서 BGR을 RGB로 바꿔준다)
             image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -123,7 +120,7 @@ def generate_frames(set_value, reps_value, rest_value):
                 
                 # counter
                 if reps_counter < reps:
-                    if exerciseType == 'dumbbellcurl':
+                    if exercise_name == 'Dumbbell Curl':
                         right_arm_angle = calculate_angle(rightShoulder, rightElbow, rightWrist)
                         
                         cv2.putText(image, str(right_arm_angle), 
@@ -152,7 +149,7 @@ def generate_frames(set_value, reps_value, rest_value):
                                 stage = "up"
                         
                             
-                    elif exerciseType == 'jumpingjack':
+                    elif exercise_name == 'Jumping Jack':
                         #jumpingjack
                         right_hip_angle = calculate_angle(leftHeel, rightHip, rightHeel)
                         left_hip_angle = calculate_angle(rightHeel, leftHip, leftHeel)
@@ -182,11 +179,7 @@ def generate_frames(set_value, reps_value, rest_value):
                             stage = 'up'
                             pluscounter()
                             
-                        
-                        
-                        
-                    
-                    elif exerciseType == 'lunge':
+                    elif exercise_name == 'Lunge':
                         right_leg_angle = calculate_angle(rightHip, rightKnee, rightHeel)
                         left_leg_angle = calculate_angle(leftHip, leftKnee, leftHeel)
                         

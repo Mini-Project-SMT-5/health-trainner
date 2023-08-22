@@ -12,14 +12,10 @@ html {
   input {
     border: none;
   }
-  body {
-    width: 144rem;
-  }
   
   .container {
     box-sizing: border-box;
     padding-right: 14.7rem;
-    width: 100%;
     overflow: hidden;
     position: relative;
     display: flex;
@@ -28,7 +24,7 @@ html {
   }
   
   .left-pane {
-    margin-right: 7.5rem;
+    /* margin-right: 7.5rem; */
     width: 76.4rem;
     height: 102.4rem;
     flex-shrink: 0;
@@ -43,11 +39,14 @@ html {
     background-color: #e6e5e5;
     background: url(../../static/assets/goal.png);
     border-radius: 0 3rem 3rem 0;
+    background-position: 50% center; 
+    background-repeat: no-repeat;
   }
   
   .right-pane {
     margin-bottom: 12.1rem;
-    display: flex;
+    margin-left: 8rem;
+    justify-self: center;
     flex-direction: column;
     flex-shrink: 0;
   }
@@ -55,19 +54,19 @@ html {
   .title {
     margin-bottom: 12.4rem;
     font-size: 3.5rem;
-    font-weight: 400;
+    font-weight: 900;
     line-height: 1;
     letter-spacing: 0.105rem;
-    color: #f04823;
+    color: #ffff;
     font-family: "Montserrat", sans-serif;
     font-style: italic;
-    white-space: nowrap;
-    display: flex;
-    align-items: baseline;
-    flex-shrink: 0;
+  }
+
+  .title > span {
+    color: #f04823;
   }
   
-  .title-part1 {
+  /* .title-part1 {
     font-size: 35px;
     font-weight: 900;
     line-height: 1.2575;
@@ -79,15 +78,14 @@ html {
   
   .title-part2 {
     position: relative;
-    left: 2rem;
     font-size: 35px;
-    font-weight: 900;
+    font-weight: 600;
     line-height: 1.2575;
     letter-spacing: 1.05px;
     color: #f04823;
     font-family: "Montserrat", sans-serif;
     font-style: italic;
-  }
+  } */
   
   .date-section {
     margin: 0rem 0rem 8.3rem 7.5rem;
@@ -118,14 +116,18 @@ line-height: normal;
 letter-spacing: 0.6px;
   }
   .start-text {
+    font-family: "Montserrat", sans-serif;
     border-radius: 30px;
+    color: #FFFF;
     background: #434242;
     width: 371px;
     height: 43px;
     flex-shrink: 0;
+    text-align: center;
   }
   
   .end-label {
+    text-align: center;
     color: #FFF;
     font-family: "Montserrat", sans-serif;
     font-size: 20px;
@@ -135,12 +137,22 @@ letter-spacing: 0.6px;
     letter-spacing: 0.6px;
   }
   .end-text {
+    font-family: "Montserrat", sans-serif;
+    text-align: center;
     width: 371px;
+    color: #FFFF;
     height: 43px;
     flex-shrink: 0;
     border-radius: 30px;
 background: #434242;
   }
+
+  .goal > input{
+    text-align: center;
+    color: #FFFF;
+    font-family: "Montserrat", sans-serif;
+  }
+
 .Goal-label{
 color: #ffffff;
 font-family: "Montserrat", sans-serif;
@@ -191,19 +203,19 @@ background: #434242;
   }
 
   .button {
-    display: flex;
     font-size: 20px;
     color: #ffffff; 
     background-color:#F04823; 
     background-size: cover;
-    border-radius: 15%;
-    padding: 8px;
+    border-radius: 25px;
+    padding: 10px 30px;
     font-family: "Montserrat", sans-serif;
-    /* font-size: 3.5rem; */
     font-weight: 400;
   }
    .button:hover{
     background-color:#343333; 
+    cursor: pointer; 
+    transition: ease-in 200ms;
    }
    #hours #minutes{
     position: absolute;
