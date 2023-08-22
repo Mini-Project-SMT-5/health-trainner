@@ -6,16 +6,6 @@ from django.utils.timezone import now
 
 import pymysql
 
-class User(models.Model):
-    iduser = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=45, null=True, default=None)
-    email = models.CharField(max_length=45, null=True, default=None)
-    password = models.CharField(max_length=255, null=True, default=None)
-    role = models.CharField(max_length=45, null=True, default=None)
-
-    class Meta:
-        db_table = 'user'
-
 
 class Goal(models.Model):
     idgoal = models.AutoField(primary_key=True)

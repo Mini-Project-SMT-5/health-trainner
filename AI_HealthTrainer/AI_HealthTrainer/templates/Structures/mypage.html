@@ -15,7 +15,7 @@
 <div class="my-page-container">
   <div class="header-section">
     <p class="username-text">
-    {{ name }}  
+    {{ user.username }}  
     <br/>
     </p>
     <input type="button" class="start-button" value="START" id="startB">
@@ -47,7 +47,7 @@
   </div>
 </div>
 <script>
-  var userName , goalTime, doneRatio, doneTime, usedCalories;
+  var goalTime, doneRatio, doneTime, usedCalories;
   
   doneRatio = {{ accomplishment }};
   console.log(doneRatio);

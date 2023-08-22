@@ -5,7 +5,7 @@ from datetime import datetime
 
 from AI_HealthTrainer import health_trainer
 from datetime import datetime
-from .models import Workout, Goal, Exercise, User
+from .models import Workout, Goal, Exercise
 from django.db.models import Sum
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
@@ -27,12 +27,12 @@ def video_feed(request):
     set_value = request.GET.get('sets')
     reps_value = request.GET.get('reps')
     rest_value = request.GET.get('rest')
-    return StreamingHttpResponse(health_trainer.generate_frames(set_value, reps_value, rest_value), content_type='multipart/x-mixed-replace; boundary=frame')
+    return StreamingHttpResponse(health_trainer.generate_frames(set_value, reps_value, rest_value, exercise_name), content_type='multipart/x-mixed-replace; boundary=frame')
 
 
 @csrf_protect
 def camera(request):    
-    global start_time
+    global start_time, exercise_name
     
     sets = request.POST['sets']
     reps = request.POST['reps']
@@ -40,7 +40,7 @@ def camera(request):
 
     start_time = datetime.now()
 
-    return render(request, "Structures/camera.html", {'sets_value': sets, 'reps_value': reps, 'rest_value': rest})
+    return render(request, "Structures/camera.html", {'sets_value': sets, 'reps_value': reps, 'rest_value': rest, 'exercise_name': exercise_name})
 
 
 def set_time(request):
@@ -68,7 +68,7 @@ def completion(request):
     workoutTime = round(int(time_interval.total_seconds()) / 60, 2)
     count = sets_value * reps_value
         
-    user = User.objects.first()
+    user = request.user
     exercise = Exercise.objects.get(name=exercise_name)
     
     workout_data = {
@@ -76,7 +76,7 @@ def completion(request):
         'start_time': start_time,
         'end_time': end_time,
         'reps': reps_value,
-        'user': user,
+        'user_id': user.id,
         'Exercise_idExercise': exercise,
         'calories': calories,
         'workout_time': workoutTime 
@@ -101,9 +101,14 @@ def user_login(request):
         user = authenticate(request, username=username, password=password)
 
         if user is not None:
-            login(request, user)
-            # print("login Berhasil")
-            return redirect('home')  # Ganti 'home' dengan nama URL yang sesuai
+            have_goal = Goal.objects.filter(user_id=user.id)
+
+            if have_goal.exists():
+                login(request, user)
+                # print("login Berhasil")
+                return redirect('mypage')  # Ganti 'home' dengan nama URL yang sesuai
+            else:
+                return redirect('goal')
         else:
             error_message = "Invalid email or password."
             return render(request, 'Structures/login.html', {'error_message': error_message})
@@ -127,12 +132,6 @@ def signup(request):
     return render(request, 'Structures/signup.html', {'form': form})
 
 
-# def home(request):
-#     user = request.user
-#     goals = Goal.objects.all()
-#     return render(request, "Structures/mypage.html", {'user': user,'goals':goals})
-
-
 def user_goal(request):
     if request.method == 'POST':
         user = request.user.id
@@ -152,28 +151,31 @@ def exercise(request):
 
 
 def mypage(request):
-    
+    user = request.user
     today = datetime.now()
-    print("today:", today.date())
     
     start_of_day = datetime.combine(today, datetime.min.time())
     end_of_day = datetime.combine(today, datetime.max.time())
     
     # db 에서 데이터 가져오는 코드
-    user = User.objects.get(name="edy")
-    user_goal = Goal.objects.get(user = user)    
+    user_goal = Goal.objects.get(user_id = user.id)
     
     total_calories = Workout.objects.filter(user=user, start_time__range=(start_of_day, end_of_day)).aggregate(Sum('calories'))
     workout_time = Workout.objects.filter(user=user, start_time__range=(start_of_day, end_of_day)).aggregate(Sum('workout_time'))
-    workout = round(int(workout_time['workout_time__sum']))
+    
+    
+    if workout_time['workout_time__sum'] is None:
+        workout = 0
+    else:
+        workout = round(int(workout_time['workout_time__sum']))
+    
+    if total_calories['calories__sum'] is None:
+        calories = 0
+    else:
+        calories = total_calories['calories__sum']
+    
     goal_min = user_goal.goal
-    user_name = user.name
-    accomplishment = round(round(int(workout_time['workout_time__sum'])) / goal_min * 100)
+    
+    accomplishment = round(round(workout) / goal_min * 100)
 
-    return render(request, "Structures/mypage.html", {'calories': total_calories['calories__sum'], 'workout': workout, 'goal': goal_min, 'name': user_name, "accomplishment": accomplishment})
-
-
-# def user_dashboard(request):
-#     user = request.user
-#     goals = Goal.objects.all()
-#     return render(request, "Structures/dashboard.html", {'user': user, 'goals':goals})
+    return render(request, "Structures/mypage.html", {'calories': calories, 'workout': workout, 'goal': goal_min, 'user': user, "accomplishment": accomplishment})
