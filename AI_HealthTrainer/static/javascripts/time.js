@@ -39,7 +39,7 @@ plus2.addEventListener("click", ()=>{
 minus2.addEventListener("click", ()=>{
     if(b > 0) {
         b--;
-        b = (b < 10 ) ? "0" + b : b;
+        b = (b < 10) ? "0" + b : b;
         num2.innerText = b;
     }
     hiddenRepsInput.value = b;  // 추가
@@ -53,16 +53,21 @@ hiddenRestsInput = document.getElementById("hiddenRestInput");  // 추가
 let c = 0;
 
 plus3.addEventListener("click", ()=>{
-    c++;
-    c = (c < 10 ) ? "0" + c : c;
-    num3.innerText = c;
-    hiddenRestsInput.value = c;
+    if (c == 0) {
+        c += 5;
+        num3.innerText = "05";
+        hiddenRestsInput.value = c;
+    } else {
+        c += 5;
+        num3.innerText = c;
+        hiddenRestsInput.value = c;
+    }
 });
 
 minus3.addEventListener("click", ()=>{
-    if(c>0){
-        c--;
-        c = (c < 10 ) ? "0" + c : c;
+    if(c >= 5){
+        c-= 5;
+        c = (c < 10) ? "0" + c : c; 
         num3.innerText = c;
     }
     hiddenRestsInput.value = c;

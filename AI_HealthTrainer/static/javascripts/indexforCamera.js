@@ -5,6 +5,7 @@ var video = document.getElementById('camera-viewer');
 var sets = video.getAttribute('data-sets');
 var reps = video.getAttribute('data-reps');
 var rest = video.getAttribute('data-rest');
+var type = video.getAttribute('data-type');
 video.src = "/video_feed?sets=" + sets + "&reps=" + reps + "&rest=" + rest;
 
 function countdown() {
@@ -33,6 +34,7 @@ function fetchFirst() {
     document.getElementById("set-num").innerText = doneSet + "/" + totalSet;
     document.getElementById("mins").innerText = String(mins);
     document.getElementById("seconds").innerText = String(secs);
+    document.getElementById("exerciseType").innerText = type;
 }
 
 function fetchData() {

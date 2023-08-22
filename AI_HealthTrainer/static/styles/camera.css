@@ -156,6 +156,15 @@ body {
     top: 40rem;
     text-align: center;
 }
+#exerciseType {
+    font-size: 3rem;
+    color: #ffffff;
+    position: absolute;
+    width: 100%; /* add this */
+    left: 0; /* adjust this */
+    top: 5rem;
+    text-align: center;
+}
 /* Media queries for larger screens */
 @media (min-width: 1024px) {
     html {
