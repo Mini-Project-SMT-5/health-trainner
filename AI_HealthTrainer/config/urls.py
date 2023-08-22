@@ -27,8 +27,8 @@ urlpatterns = [
     path('camera/', views.camera, name='camera'),
     path('video_feed/', views.video_feed, name='video_feed'),
     path('get_feedback/', views.get_feedback, name='get_feedback'),
+    path('mypage/', views.mypage, name='mypage'),
     path('completion/', views.completion, name='completion'),
     path('exercise/', views.exercise, name='exercise'),
-    path('mypage/', views.mypage, name='mypage'),
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
