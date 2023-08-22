@@ -15,13 +15,12 @@
 <div class="my-page-container">
   <div class="header-section">
     <p class="username-text">
-    UserName  
+    {{ name }}  
     <br/>
     </p>
     <input type="button" class="start-button" value="START" id="startB">
   </div>
   <div class="goal-section">
-    <img class="profile-img" src="../assets/rectangle-10.png"/>
     <div class="goal-bg">
     </div>
     <p class="goal-label">GOAL</p>
@@ -31,24 +30,48 @@
     </div>
     <input type="button" id="setG" class="set-goal-indicator" style="width: 22rem; height: 5.4rem;">
     <p class="set-goal-text" style="font-size: 3rem; left: 45rem;">Set Goal</p>
-    <p class="goal-time" id="goal-time-num">(100</p>
+    <p class="goal-time" id="goal-time-num">({{ goal }}</p>
     <p class="goal-time"  id="goal-time-unit">mins)</p>
-    <p class="percentage-text" id="percentage-num">10</p>
+    <p class="percentage-text" id="percentage-num">{{ accomplishment }}</p>
     <p class="percentage-text" id="percentage-unit">%</p>
     <div class="exercise-container-left">
     </div>
     <div class="exercise-container-right">
     </div>
-    <p class="calories-text" id="calories-num">2000</p>
+    <p class="calories-text" id="calories-num">{{ calories }}</p>
     <p class="calories-text" id="calories-unit">Kcal</p>
     <p class="exercise-label">Time Of Exercising</p>
     <p class="used-calories-label">Used Calories</p>
-    <p class="total-hours-text" id="total-hour-num">100</p>
+    <p class="total-hours-text" id="total-hour-num"> {{ workout }} </p>
     <p class="total-hours-text" id="total-hour-unit">mins</p>
   </div>
 </div>
-<script src="../javascripts/indexforMypage.js"></script>
 <script>
+  var userName , goalTime, doneRatio, doneTime, usedCalories;
+  
+  doneRatio = {{ accomplishment }};
+  console.log(doneRatio);
+      
+  fetch("/mypage/") // 서버 주소
+  .then(response => {
+      if (!response.ok) throw new Error("Network response was not ok");
+      return response.json();
+  })
+  .then(html => {
+      document.open();
+      document.write(html);
+      document.close();
+  })
+  .catch(error => console.error('Error:', error));
+  
+  
+  const progressBar = document.getElementsByClassName("progress-bar")[0]; 
+  const progressBg = document.getElementsByClassName("progress-bg")[0];
+  const maxWidth = parseFloat(window.getComputedStyle(progressBg).width); 
+  progressBar.style.width = (maxWidth * (doneRatio / 100 + 0.02)) + "px"; 
+
+
+ 
   function sendFinishtoExercise() {
   fetch('/exercise/')
   .then(response => {

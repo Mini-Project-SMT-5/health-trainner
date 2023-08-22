@@ -13,7 +13,9 @@ input {
 	border: none;
 }
 body {
-  width: 144rem;
+  width: 100vw;  /* 화면 너비에 맞게 페이지 너비 설정 */
+  margin: 0;     /* 기본 마진 제거 */
+  overflow-x: hidden;  /* 가로 스크롤 제거 */
 }
 
 .my-page-container {
@@ -34,7 +36,7 @@ body {
   flex-shrink: 0;
 }
 .header-section .username-text {
-  margin-right: 0.3rem;
+  margin-right: 1.5rem;  /* 0.3rem에서 1rem으로 변경 */
   font-size: 6.4rem;
   font-weight: 700;
   line-height: 1.2175;
@@ -63,9 +65,9 @@ body {
   flex-shrink: 0;
 }
 .goal-section {
-  margin-left: 1.7rem;
-  width: 124.5rem;
-  height: 66.2rem;
+  margin-left: 0;  /* 기존 값을 변경 */
+  width: 100%;  /* 100%로 변경 */
+  height: 66.2rem;  /* 필요한 경우 높이도 조정할 수 있습니다 */
   position: relative;
   flex-shrink: 0;
 }
@@ -80,7 +82,7 @@ body {
   border-radius: 3.6rem;
 }
 .goal-section .goal-bg  {
-  width: 122.5rem;
+  width: 100%;
   height: 26.5rem;
   position: absolute;
   left: 2rem;
@@ -103,7 +105,7 @@ body {
   white-space: nowrap;
 }
 .goal-section .progress-bg  {
-  width: 102.1rem;
+  width: 90%;
   height: 3.9rem;
   position: absolute;
   left: 4.5rem;
@@ -161,7 +163,7 @@ body {
   width: 8.3rem;
   height: 4.4rem;
   position: absolute;
-  left: 111rem;
+  left: 145rem;
   top: 12.1rem;
   font-size: 3.6rem;
   font-weight: 700;
@@ -172,19 +174,20 @@ body {
   white-space: nowrap;
 }
 .goal-section .exercise-container-left {
-  width: 55.4rem;
-  height: 33.2rem;
+  width: calc(50% - 1rem);  
+  height: 33.2rem; 
   position: absolute;
-  left: 2rem;
+  left: 0; 
   top: 33rem;
   background-color: #6d6d6d;
   border-radius: 3rem;
 }
+
 .goal-section .exercise-container-right {
-  width: 55.4rem;
+  width: calc(50% - 1rem);  
   height: 33.2rem;
   position: absolute;
-  left: 69.1rem;
+  left: calc(50% + 1rem);
   top: 33rem;
   background-color: #6d6d6d;
   border-radius: 3rem;
@@ -193,7 +196,7 @@ body {
   width: 32.7rem;
   height: 7.8rem;
   position: absolute;
-  left: 78.5rem;
+  left: 100rem;
   top: 51.7rem;
   font-size: 6.4rem;
   font-weight: 700;
@@ -220,7 +223,7 @@ body {
   width: 36.1rem;
   height: 5.9rem;
   position: absolute;
-  left: 73.6rem;
+  left: 83rem;
   top: 35.8rem;
   font-size: 4.8rem;
   font-weight: 700;
@@ -260,11 +263,12 @@ body {
   left: 29rem;
 }
 #percentage-unit {
-  left: 117.5rem;
+  left: 151.5rem;
 }
 #calories-unit {
-  left: 97rem;
+  left: 120rem;
 }
 #total-hour-unit {
   left: 30rem;
 }
+
