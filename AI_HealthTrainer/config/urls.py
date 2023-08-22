@@ -31,9 +31,11 @@ urlpatterns = [
     path('get_feedback/', views.get_feedback, name='get_feedback'),
     path('completion/', views.completion, name='completion'),
     path('home/', views.home, name='home'),
+    path('dashboard/', views.user_dashboard, name='dashboard'),
     path('home/exercise/', views.exercise, name='exercise'),
     path('home/goal/', views.user_goal, name='goal'),
     path('home/exercise/time/', views.set_time, name='set_time'),
+    path('home/exercises/', views.admin_exercise, name='adminexercise'),
     # path('exercise/', views.exercise, name='exercise'),
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

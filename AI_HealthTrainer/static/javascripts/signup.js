@@ -1,7 +1,7 @@
 const icon = document.getElementById("icon");
 const iconCheck = document.getElementById("iconCheck");
-const passwordInput = document.getElementById("password");
-const checkpasswordInput = document.getElementById("checkpassword");
+const passwordInput = document.getElementById("password1");
+const checkpasswordInput = document.getElementById("password2");
 
 icon.addEventListener("click", function() {
   if (passwordInput.type === "password") {

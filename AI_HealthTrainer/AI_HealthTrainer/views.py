@@ -7,7 +7,7 @@ from django.shortcuts import render, redirect
 from .forms import SignUpForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
-from AI_HealthTrainer.models import Goal
+from AI_HealthTrainer.models import Goal, Exercise
 
 from AI_HealthTrainer import health_trainer
 from datetime import datetime, timedelta
@@ -81,6 +81,7 @@ def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
+            print(form)
             user = form.save()
             login(request, user)
             return redirect('login')
@@ -93,7 +94,8 @@ def signup(request):
 
 def home(request):
     user = request.user
-    return render(request, "Structures/mypage.html", {'user': user})
+    goals = Goal.objects.all()
+    return render(request, "Structures/mypage.html", {'user': user,'goals':goals})
 
 def user_goal(request):
     if request.method == 'POST':
@@ -111,6 +113,16 @@ def user_goal(request):
 
 def exercise(request):
     return render(request, "Structures/exercise.html")
+
+def user_dashboard(request):
+    user = request.user
+    goals = Goal.objects.all()
+    return render(request, "Structures/dashboard.html", {'user': user, 'goals':goals})
+
+
+def admin_exercise(request):
+    exercises = Exercise.objects.all()
+    return render(request, "Structures/exercise_admin.html", {'exercises': exercises} )
 
 # def index(request):
 #     return render(request, 'index.html')

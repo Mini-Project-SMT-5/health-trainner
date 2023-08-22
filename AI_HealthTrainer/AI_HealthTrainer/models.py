@@ -28,7 +28,7 @@ class Exercise(models.Model):
         
 class Workout(models.Model):
     exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE) 
+    goal = models.ForeignKey(Goal, on_delete=models.CASCADE, default="") 
     count = models.SmallIntegerField(("Count"))
     start_time = models.DateTimeField(("Start Time"), auto_now=False, auto_now_add=False)
     end_time = models.DateTimeField(("End Time"), auto_now=False, auto_now_add=False)
