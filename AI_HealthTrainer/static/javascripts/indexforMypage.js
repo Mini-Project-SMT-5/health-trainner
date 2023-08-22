@@ -1,5 +1,4 @@
 
-
 document.getElementsByClassName("start-button")[0].addEventListener("click", function() {
     window.location.href = "././time.html";
 });
