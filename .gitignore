@@ -1,5 +1,5 @@
 
-AI_HealthTrainer/venv/
+AI_HealthTrainer/Env/
 AI_HealthTrainer/AI_HealthTrainer/migrations/
 AI_HealthTrainer/config/__pycache__/
 AI_HealthTrainer/db.sqlite3
